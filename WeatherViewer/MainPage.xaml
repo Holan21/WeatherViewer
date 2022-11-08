@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WetherViewer.MainPage">
+
+
+    <ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+            
+            <StackLayout Spacing="10" Orientation="Horizontal" HorizontalOptions="Center" >
+                
+                <Entry
+                    x:Name="Country"
+                    MinimumWidthRequest="150"
+                    FontSize="18"
+                    Placeholder="Country" 
+                    Completed="OnCompletedCountryE"/>
+                
+                <Picker x:Name="getCityP" 
+                        ItemsSource="{Binding Citys}"/>
+
+                <Label
+                    x:Name="temperatureValue"
+                    Text="Temperature will be here!"
+                    SemanticProperties.HeadingLevel="Level2"
+                    SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                    FontSize="18"/>
+                
+            </StackLayout>
+
+                <Button
+                x:Name="getWeatherBtn"
+                Text="Check Weather"
+                SemanticProperties.Hint="Click button if you need check temperature"
+                Clicked="OnClickGetWeather"
+                HorizontalOptions="Center"/>
+
+                <ActivityIndicator
+                x:Name="weatherLoadingIndicator"
+                IsRunning="False" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
