@@ -1,6 +1,7 @@
 ﻿using WetherViewer.Service.WeatherData;
 
-namespace WetherViewer;
+namespace WetherViewer
+	;
 
 public static class MauiProgram
 {

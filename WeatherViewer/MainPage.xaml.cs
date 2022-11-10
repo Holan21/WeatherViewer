@@ -29,14 +29,16 @@ public partial class MainPage : ContentPage
         temperatureValue.Text = testTemperatureValue.ToString() + "°C";
         getWeatherBtn.IsVisible = true;
         weatherLoadingIndicator.IsRunning = false;
+        
     }
-    //unfocus if yo
+    //unfocus if you press enter
     private void OnCompletedCountryE(object sender, EventArgs e)
-    { 
+    {
         Country.Unfocus();
+        getCityP.IsEnabled = Country.Text != "";
     }
 
-    private async Task<int> GetRandomValue()
+        private async Task<int> GetRandomValue()
     {
         return await Task.Run(() =>
         {

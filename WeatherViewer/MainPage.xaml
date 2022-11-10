@@ -19,7 +19,7 @@
                     Placeholder="Country" 
                     Completed="OnCompletedCountryE"/>
                 
-                <Picker x:Name="getCityP" 
+                <Picker x:Name="getCityP" IsEnabled="False"
                         ItemsSource="{Binding Citys}"/>
 
                 <Label
