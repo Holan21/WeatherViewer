@@ -17,7 +17,9 @@
                     MinimumWidthRequest="150"
                     FontSize="18"
                     Placeholder="Country" 
-                    Completed="OnCompletedCountryE"/>
+                    Completed="OnCompletedCountryE"
+                    TextChanged="OnChangeTextConutryE"
+                    />
                 
                 <Picker x:Name="getCityP" IsEnabled="False"
                         ItemsSource="{Binding Citys}"/>

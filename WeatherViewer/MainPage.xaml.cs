@@ -35,6 +35,10 @@ public partial class MainPage : ContentPage
     private void OnCompletedCountryE(object sender, EventArgs e)
     {
         Country.Unfocus();
+    }
+
+    private void OnChangeTextConutryE(object sender , TextChangedEventArgs e) 
+    {
         getCityP.IsEnabled = Country.Text != "";
     }
 
