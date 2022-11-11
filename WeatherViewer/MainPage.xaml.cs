@@ -2,11 +2,11 @@
 
 public partial class MainPage : ContentPage
 {
-    private Picker _cityPicker;
-    private ActivityIndicator _weatherLoadingIndicator;
-    private Label _temperatureLabel;
-    private Button _weatherButton;
-    private Entry _countryEntry;
+    private readonly Picker _cityPicker;
+    private readonly ActivityIndicator _weatherLoadingIndicator;
+    private readonly Label _temperatureLabel;
+    private readonly Button _weatherButton;
+    private readonly Entry _countryEntry;
     public List<string> Citys {get; set;} = new List<string>()
     {
         "London",
@@ -25,7 +25,6 @@ public partial class MainPage : ContentPage
         BindingContext = this;
         _cityPicker.SelectedIndex = 0;
     }
-
 
     private async void OnClickWeatherButton(object sender, EventArgs e)
     {  
