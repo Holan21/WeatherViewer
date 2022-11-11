@@ -2,11 +2,11 @@
 
 public partial class MainPage : ContentPage
 {
+    private readonly Button _weatherButton;
     private readonly Picker _cityPicker;
     private readonly ActivityIndicator _weatherLoadingIndicator;
-    private readonly Label _temperatureLabel;
-    private readonly Button _weatherButton;
-    private readonly Entry _countryEntry;
+    private readonly ActivityIndicator _cityLoadingIndicator;
+
     public List<string> Citys {get; set;} = new List<string>()
     {
         "London",
@@ -16,43 +16,47 @@ public partial class MainPage : ContentPage
 
     public MainPage()
     {
-        _cityPicker = CityPicker;
-        _weatherLoadingIndicator = WeatherLoadingIndicator;
-        _temperatureLabel = TemperatureLabel;
-        _weatherButton = WeatherButton;
-        _countryEntry = CountryEntry;
         InitializeComponent();
         BindingContext = this;
+        _weatherButton = WeatherButton;
+        _cityPicker = CityPicker;
+        _weatherLoadingIndicator = WeatherLoadingIndicator;
+        _cityLoadingIndicator = CityLoadingIndecator;
         _cityPicker.SelectedIndex = 0;
     }
 
     private async void OnClickWeatherButton(object sender, EventArgs e)
     {  
+        _weatherButton.IsVisible = false;
         _weatherLoadingIndicator.IsRunning = true;
-        _weatherLoadingIndicator.IsVisible = false;
+        _weatherLoadingIndicator.IsVisible = true;   
         var Temperature = await GetRandomValue();
-        _temperatureLabel.Text = Temperature.ToString() + "°C";
+        TemperatureLabel.Text = Temperature.ToString() + "°C";
         _weatherButton.IsVisible = true;
         _weatherLoadingIndicator.IsRunning = false;
+        _weatherLoadingIndicator.IsVisible = false;
     }
 
-    private void OnCompletedCountryEntry(object sender, EventArgs e)
+    private async void OnCompletedCountryEntry(object sender, EventArgs e)
     {
         ((Entry)sender).Unfocus();
+        _cityPicker.IsVisible = false;
+        _cityLoadingIndicator.IsVisible = true;
+        _cityLoadingIndicator.IsRunning = true;
+        await Task.Run(() => {
+            Thread.Sleep(3000);
+        });
+        _cityLoadingIndicator.IsRunning = false;
+        _cityLoadingIndicator.IsVisible = false;
+        _cityPicker.IsVisible = true;
+        _cityPicker.IsEnabled = true;
     }
 
-    private void OnChangeTextCountryEntry(object sender , TextChangedEventArgs e) 
+    private void OnTextChangedCountryEntry(object sender, TextChangedEventArgs e)
     {
-        var isEnabled = _countryEntry.Text != string.Empty;
-
-        _cityPicker.IsEnabled = isEnabled;
-        if (isEnabled) 
-        {
-            //TODO:main logic get citys
-        }
+        if (((Entry)sender).Text == string.Empty) _cityPicker.IsEnabled = false;
     }
-
-        private async Task<int> GetRandomValue()
+    private async Task<int> GetRandomValue()
     {
         return await Task.Run(() =>
         {
@@ -62,4 +66,6 @@ public partial class MainPage : ContentPage
             return rnd.Next(0, 50);
         });
     }
+
+
 }

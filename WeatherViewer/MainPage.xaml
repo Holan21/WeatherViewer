@@ -17,11 +17,18 @@
                     FontSize="18"
                     Placeholder="Country" 
                     Completed="OnCompletedCountryEntry"
-                    TextChanged="OnChangeTextCountryEntry"/>
+                    TextChanged="OnTextChangedCountryEntry"
+                    />
+                
+                <ActivityIndicator
+                    x:Name="CityLoadingIndecator"
+                    IsRunning="False"
+                    IsVisible="false"
+                    />
                 
                 <Picker x:Name="CityPicker" IsEnabled="False"
-                        ItemsSource="{Binding Citys}"/>
-
+                        ItemsSource="{x:Binding Citys}"/>
+                
                 <Label
                     x:Name="TemperatureLabel"
                     Text="Temperature will be here!"
@@ -40,7 +47,9 @@
 
                 <ActivityIndicator
                 x:Name="WeatherLoadingIndicator"
-                IsRunning="False" />
+                IsRunning="False" 
+                IsVisible="False"    
+                    />
         
         </VerticalStackLayout>
     </ScrollView>
