@@ -41,6 +41,7 @@
                 <Button
                 x:Name="WeatherButton"
                 Text="Check Weather"
+                IsEnabled="False"
                 SemanticProperties.Hint="Click button if you need check temperature"
                 Clicked="OnClickWeatherButton"
                 HorizontalOptions="Center"/>

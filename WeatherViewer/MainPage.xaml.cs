@@ -8,7 +8,7 @@ public partial class MainPage : ContentPage
     private readonly ActivityIndicator _cityLoadingIndicator;
 
     public List<string> Citys {get; set;} = new List<string>()
-    {
+    {   
         "London",
         "Paris",
         "Kyiv",
@@ -49,12 +49,18 @@ public partial class MainPage : ContentPage
         _cityLoadingIndicator.IsRunning = false;
         _cityLoadingIndicator.IsVisible = false;
         _cityPicker.IsVisible = true;
+
         _cityPicker.IsEnabled = true;
+        _weatherButton.IsEnabled = true;
     }
 
     private void OnTextChangedCountryEntry(object sender, TextChangedEventArgs e)
     {
-        if (((Entry)sender).Text == string.Empty) _cityPicker.IsEnabled = false;
+        if (((Entry)sender).Text == string.Empty)
+        {
+            _cityPicker.IsEnabled = false;
+            _weatherButton.IsEnabled = false;   
+        }
     }
     private async Task<int> GetRandomValue()
     {
