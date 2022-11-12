@@ -41,11 +41,15 @@ public partial class MainPage : ContentPage
 
     private async void OnCompletedCountryEntry(object sender, EventArgs e)
     {
-        ((Entry)sender).Unfocus();
+        Entry textField = (Entry)sender;
+        textField.Unfocus();
+        if (textField.Text == string.Empty) return;
+
         _cityPicker.IsVisible = false;
         _cityLoadingIndicator.IsVisible = true;
         _cityLoadingIndicator.IsRunning = true;
-        await Task.Run(() => {
+        await Task.Run(() =>
+        {
             Thread.Sleep(3000);
         });
         _cityLoadingIndicator.IsRunning = false;
@@ -54,9 +58,10 @@ public partial class MainPage : ContentPage
 
         _cityPicker.IsEnabled = true;
         _weatherButton.IsEnabled = true;
+
     }
 
-    private void OnTextChangedCountryEntry(object sender, TextChangedEventArgs e)
+        private void OnTextChangedCountryEntry(object sender, TextChangedEventArgs e)
     {
         if (((Entry)sender).Text == string.Empty)
         {

@@ -27,7 +27,7 @@
                     />
                 
                 <Picker x:Name="CityPicker" IsEnabled="False"
-                        ItemsSource="{Binding Path=Citys, Mode=TwoWay}"/>
+                        ItemsSource="{Binding Citys, Mode=TwoWay}"/>
                 
                 <Label
                     x:Name="TemperatureLabel"
