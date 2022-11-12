@@ -43,8 +43,7 @@ public partial class MainPage : ContentPage
     {
         Entry textField = (Entry)sender;
         textField.Unfocus();
-        if (textField.Text == string.Empty) return;
-
+        if (textField.Text.Trim() == string.Empty) return;
         _cityPicker.IsVisible = false;
         _cityLoadingIndicator.IsVisible = true;
         _cityLoadingIndicator.IsRunning = true;
@@ -59,7 +58,7 @@ public partial class MainPage : ContentPage
 
     private void OnTextChangedCountryEntry(object sender, TextChangedEventArgs e)
     {
-        if (((Entry)sender).Text != string.Empty) return;
+        if (((Entry)sender).Text.Trim() != string.Empty) return;
         _cityPicker.IsEnabled = false;
         _weatherButton.IsEnabled = false;
         _temperatureLabel.Text = "Temperature will be here!";
