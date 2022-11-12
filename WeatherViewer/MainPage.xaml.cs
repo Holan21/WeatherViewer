@@ -61,14 +61,13 @@ public partial class MainPage : ContentPage
 
     }
 
-        private void OnTextChangedCountryEntry(object sender, TextChangedEventArgs e)
+    private void OnTextChangedCountryEntry(object sender, TextChangedEventArgs e)
     {
-        if (((Entry)sender).Text == string.Empty)
-        {
-            _cityPicker.IsEnabled = false;
-            _weatherButton.IsEnabled = false;
-            _temperatureLabel.Text = "Temperature will be here!";
-        }
+        if (((Entry)sender).Text != string.Empty) return;
+        _cityPicker.IsEnabled = false;
+        _weatherButton.IsEnabled = false;
+        _temperatureLabel.Text = "Temperature will be here!";
+
     }
     private async Task<int> GetRandomValue()
     {
