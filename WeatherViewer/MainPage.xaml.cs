@@ -32,7 +32,7 @@ public partial class MainPage : ContentPage
         _weatherButton.IsVisible = false;
         _weatherLoadingIndicator.IsRunning = true;
         _weatherLoadingIndicator.IsVisible = true;   
-        var Temperature = await GetRandomValue();
+        var Temperature = await GetWeather();
         _temperatureLabel.Text = Temperature.ToString() + "°C";
         _weatherButton.IsVisible = true;
         _weatherLoadingIndicator.IsRunning = false;
@@ -48,14 +48,10 @@ public partial class MainPage : ContentPage
         _cityPicker.IsVisible = false;
         _cityLoadingIndicator.IsVisible = true;
         _cityLoadingIndicator.IsRunning = true;
-        await Task.Run(() =>
-        {
-            Thread.Sleep(3000);
-        });
+        var citys = await getCitys();
         _cityLoadingIndicator.IsRunning = false;
         _cityLoadingIndicator.IsVisible = false;
         _cityPicker.IsVisible = true;
-
         _cityPicker.IsEnabled = true;
         _weatherButton.IsEnabled = true;
 
@@ -69,14 +65,25 @@ public partial class MainPage : ContentPage
         _temperatureLabel.Text = "Temperature will be here!";
 
     }
-    private async Task<int> GetRandomValue()
+
+    //TODO:SearchCity
+    private async Task<Location> getCitys()
     {
         return await Task.Run(() =>
         {
-            //TODO:call getWeather
-            var rnd = new Random();
+            Location location = new Location();
             Thread.Sleep(3000);
-            return rnd.Next(0, 50);
+            return location;
+        });
+    }
+
+    //TODO:call getWeather
+    private async Task<int> GetWeather()
+    {
+        return await Task.Run(() =>
+        {
+            Thread.Sleep(3000);
+            return new Random().Next(0, 50);
         });
     }
 }
