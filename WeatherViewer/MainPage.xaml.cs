@@ -6,6 +6,7 @@ public partial class MainPage : ContentPage
     private readonly Picker _cityPicker;
     private readonly ActivityIndicator _weatherLoadingIndicator;
     private readonly ActivityIndicator _cityLoadingIndicator;
+    private readonly Label _temperatureLabel;
 
     public List<string> Citys {get; set;} = new List<string>()
     {   
@@ -22,6 +23,7 @@ public partial class MainPage : ContentPage
         _cityPicker = CityPicker;
         _weatherLoadingIndicator = WeatherLoadingIndicator;
         _cityLoadingIndicator = CityLoadingIndecator;
+        _temperatureLabel = TemperatureLabel;
         _cityPicker.SelectedIndex = 0;
     }
 
@@ -31,7 +33,7 @@ public partial class MainPage : ContentPage
         _weatherLoadingIndicator.IsRunning = true;
         _weatherLoadingIndicator.IsVisible = true;   
         var Temperature = await GetRandomValue();
-        TemperatureLabel.Text = Temperature.ToString() + "°C";
+        _temperatureLabel.Text = Temperature.ToString() + "°C";
         _weatherButton.IsVisible = true;
         _weatherLoadingIndicator.IsRunning = false;
         _weatherLoadingIndicator.IsVisible = false;
@@ -59,7 +61,8 @@ public partial class MainPage : ContentPage
         if (((Entry)sender).Text == string.Empty)
         {
             _cityPicker.IsEnabled = false;
-            _weatherButton.IsEnabled = false;   
+            _weatherButton.IsEnabled = false;
+            _temperatureLabel.Text = "Temperature will be here!";
         }
     }
     private async Task<int> GetRandomValue()
@@ -72,6 +75,4 @@ public partial class MainPage : ContentPage
             return rnd.Next(0, 50);
         });
     }
-
-
 }
