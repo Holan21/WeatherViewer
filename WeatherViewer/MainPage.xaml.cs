@@ -1,10 +1,5 @@
-﻿
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Controls.Platform;
-using Microsoft.Maui.Platform;
-using System;
+﻿using Microsoft.Maui.Controls.Platform;
 using Thread = System.Threading.Thread;
-using ViewExtensions = Microsoft.Maui.Controls.ViewExtensions;
 
 namespace WetherViewer;
 
@@ -18,8 +13,8 @@ public partial class MainPage : ContentPage
     private readonly Entry _countryEntry;
     private readonly Border _border;
     private readonly Brush DefaultColorBorder, ErrorColorBorder;
-    private readonly List<string> citys;
-
+    private List<string> citys;
+     
     public MainPage()
     {
         InitializeComponent();
@@ -30,6 +25,7 @@ public partial class MainPage : ContentPage
         _temperatureLabel = TemperatureLabel;
         _countryEntry = CountryEntry;
         _border = Border;
+
         citys = new List<string>();
         DefaultColorBorder = _border.Stroke;
         _countryEntry.Text = "";
@@ -55,22 +51,23 @@ public partial class MainPage : ContentPage
         Entry textField = (Entry)sender;
         if (textField.Text.Trim() == string.Empty)
         {
-            _border.Stroke = ErrorColorBorder;
-            await AnimateError(_border);
+            await ErrorBorder(_border);
             return;
         }
         textField.Unfocus();
         _cityPicker.IsVisible = false;
         _cityLoadingIndicator.IsVisible = true;
         _cityLoadingIndicator.IsRunning = true;
-        await GetCitys(_countryEntry.Text);
+        bool isDone = await GetCitys(_countryEntry.Text);
         _cityLoadingIndicator.IsRunning = false;
         _cityLoadingIndicator.IsVisible = false;
-        _cityPicker.ItemsSource = citys;
+        _cityPicker.ItemsSource = citys.ToArray();
+        _cityPicker.ItemsSource = citys.ToArray();
         _cityPicker.SelectedIndex = 0;
         _cityPicker.IsVisible = true;
-        _cityPicker.IsEnabled = true;
-        _weatherButton.IsEnabled = true;
+        _cityPicker.IsEnabled = isDone;
+        _weatherButton.IsEnabled = isDone;
+        if (!isDone) await ErrorBorder(_border);
     }
 
     private void OnTextChangedCountryEntry(object sender, TextChangedEventArgs e)
@@ -79,33 +76,37 @@ public partial class MainPage : ContentPage
         _border.Stroke = DefaultColorBorder;
         if (textField.Text.Trim() != string.Empty) return;
         _cityPicker.IsEnabled = false;
+        citys.Clear();
+        _cityPicker.SelectedIndex = -1;
+        _cityPicker.ItemsSource = citys;
+        _cityPicker.ItemsSource = citys;
         _weatherButton.IsEnabled = false;
         _temperatureLabel.Text = "Temperature will be here!";
     }
 
     //TODO:SearchCity
-    private async Task GetCitys(string Country)
+    private async Task<bool> GetCitys(string Country)
     {
-        await Task.Run(() =>
+        return await Task<bool>.Run(async () =>
         {
+            Thread.Sleep(3000);
             switch (Country.Trim().ToLower())
             {
-                case "ukraniane":
-                    citys.Add("Kyiv");
-                    citys.Add("Nikolaev");
-                    citys.Add("Herson");
+                case "ukraine":
+                    citys = new List<string>() { "Kyiv", "Nikolaev", "Herson" };
                     break;
                 case "usa":
-                    citys.Add("Washington");
-                    citys.Add("New-York");
+                    citys = new List<string>() { "Washington", "New-York" };
                     break;
-                case "halownest":
-                    citys.Add("City Tear");
+                case "hallownest":
+                    citys = new List<string>() { "City Tear" };
                     break;
+                default:
+                    return false;
             }
-            Thread.Sleep(3000);
-            return citys;
+            return true;
         });
+
     }
 
     //TODO:call getWeather
@@ -116,6 +117,12 @@ public partial class MainPage : ContentPage
             Thread.Sleep(3000);
             return new Random().Next(0, 50);
         });
+    }
+
+    private async Task ErrorBorder(Border view)
+    {
+        view.Stroke = ErrorColorBorder;
+        await AnimateError(view);
     }
 
     private async Task<bool> AnimateError(VisualElement view)
@@ -136,4 +143,5 @@ public partial class MainPage : ContentPage
 
         return true;
     }
+
 }

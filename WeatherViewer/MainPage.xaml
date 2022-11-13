@@ -10,6 +10,7 @@
             VerticalOptions="Center">
             
             <StackLayout Spacing="10" Orientation="Horizontal" HorizontalOptions="Center" >
+                
                 <Border 
                         Stroke="#808080"
                         StrokeThickness="2"
@@ -25,6 +26,7 @@
                     TextChanged="OnTextChangedCountryEntry"
                     />
                 </Border>
+                
                 <ActivityIndicator
                     x:Name="CityLoadingIndecator"
                     IsRunning="False"
@@ -32,7 +34,8 @@
                     />
                 
                 <Picker x:Name="CityPicker" 
-                        IsEnabled="False"/>
+                        IsEnabled="False"
+                    />
                 
                 <Label
                     x:Name="TemperatureLabel"
