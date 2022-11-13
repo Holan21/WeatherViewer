@@ -7,6 +7,5 @@
         public int WindSpeed { get; set; } = int.MaxValue;
         public string WeatherStatus { get; set; } = string.Empty; //rain , snowly
         public string WindDirection { get; set; } = string.Empty; //North, east
-        public string CityName { get; set; } = string.Empty;
     }
 }

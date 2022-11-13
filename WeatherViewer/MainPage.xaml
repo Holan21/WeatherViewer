@@ -10,24 +10,29 @@
             VerticalOptions="Center">
             
             <StackLayout Spacing="10" Orientation="Horizontal" HorizontalOptions="Center" >
-                
-                <Entry
+                <Border 
+                        Stroke="#808080"
+                        StrokeThickness="2"
+                        StrokeShape="RoundRectangle 20 , 20 , 20 , 20"
+                        x:Name="Border"
+                        HorizontalOptions="Center">
+                    <Entry
                     x:Name="CountryEntry"
                     MinimumWidthRequest="150"
                     FontSize="18"
-                    Placeholder="Country" 
+                    Placeholder="Country:" 
                     Completed="OnCompletedCountryEntry"
                     TextChanged="OnTextChangedCountryEntry"
                     />
-                
+                </Border>
                 <ActivityIndicator
                     x:Name="CityLoadingIndecator"
                     IsRunning="False"
                     IsVisible="false"
                     />
                 
-                <Picker x:Name="CityPicker" IsEnabled="False"
-                        ItemsSource="{Binding Citys, Mode=TwoWay}"/>
+                <Picker x:Name="CityPicker" 
+                        IsEnabled="False"/>
                 
                 <Label
                     x:Name="TemperatureLabel"

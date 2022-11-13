@@ -1,6 +1,6 @@
 ﻿namespace WetherViewer.Data.APIProviders
 {
-    public class LocationJSONAPI
+    public class LocationJSONAPI : ILocationAPI
     {
     }
 }
