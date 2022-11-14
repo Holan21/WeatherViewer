@@ -1,5 +1,4 @@
-﻿using Microsoft.Maui.Controls.Platform;
-using Thread = System.Threading.Thread;
+﻿using Thread = System.Threading.Thread;
 
 namespace WetherViewer;
 
@@ -59,7 +58,7 @@ public partial class MainPage : ContentPage
         var isDone = await GetCitys(_countryEntry.Text);
         _cityLoadingIndicator.IsRunning = false;
         _cityLoadingIndicator.IsVisible = false;
-        _cityPicker.ItemsSource = citys.ToList<string>();
+        _cityPicker.ItemsSource = citys;
         _cityPicker.SelectedIndex = 0;
         _cityPicker.IsVisible = true;
         _cityPicker.IsEnabled = isDone;
@@ -73,7 +72,7 @@ public partial class MainPage : ContentPage
         _border.Stroke = DefaultColorBorder;
         if (textField.Text.Trim() != string.Empty) return;
         _cityPicker.IsEnabled = false;
-        citys = new string[] { };
+        citys = Array.Empty<string>();
         _cityPicker.SelectedIndex = -1;
         _cityPicker.ItemsSource = citys;
         _weatherButton.IsEnabled = false;
