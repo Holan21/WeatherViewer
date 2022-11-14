@@ -13,7 +13,7 @@ public partial class MainPage : ContentPage
     private readonly Entry _countryEntry;
     private readonly Border _border;
     private readonly Brush DefaultColorBorder, ErrorColorBorder;
-    private List<string> citys;
+    private string[] citys;
      
     public MainPage()
     {
@@ -25,12 +25,10 @@ public partial class MainPage : ContentPage
         _temperatureLabel = TemperatureLabel;
         _countryEntry = CountryEntry;
         _border = Border;
-
-        citys = new List<string>();
+        
         DefaultColorBorder = _border.Stroke;
         _countryEntry.Text = "";
         ErrorColorBorder = new Color(255, 0, 0);
-        _cityPicker.ItemsSource = new List<string> { };
         _countryEntry.Focus();
     }
 
@@ -58,11 +56,10 @@ public partial class MainPage : ContentPage
         _cityPicker.IsVisible = false;
         _cityLoadingIndicator.IsVisible = true;
         _cityLoadingIndicator.IsRunning = true;
-        bool isDone = await GetCitys(_countryEntry.Text);
+        var isDone = await GetCitys(_countryEntry.Text);
         _cityLoadingIndicator.IsRunning = false;
         _cityLoadingIndicator.IsVisible = false;
-        _cityPicker.ItemsSource = citys.ToArray();
-        _cityPicker.ItemsSource = citys.ToArray();
+        _cityPicker.ItemsSource = citys.ToList<string>();
         _cityPicker.SelectedIndex = 0;
         _cityPicker.IsVisible = true;
         _cityPicker.IsEnabled = isDone;
@@ -76,9 +73,8 @@ public partial class MainPage : ContentPage
         _border.Stroke = DefaultColorBorder;
         if (textField.Text.Trim() != string.Empty) return;
         _cityPicker.IsEnabled = false;
-        citys.Clear();
+        citys = new string[] { };
         _cityPicker.SelectedIndex = -1;
-        _cityPicker.ItemsSource = citys;
         _cityPicker.ItemsSource = citys;
         _weatherButton.IsEnabled = false;
         _temperatureLabel.Text = "Temperature will be here!";
@@ -87,19 +83,19 @@ public partial class MainPage : ContentPage
     //TODO:SearchCity
     private async Task<bool> GetCitys(string Country)
     {
-        return await Task<bool>.Run(async () =>
+        return await Task<bool>.Run(() =>
         {
             Thread.Sleep(3000);
             switch (Country.Trim().ToLower())
             {
                 case "ukraine":
-                    citys = new List<string>() { "Kyiv", "Nikolaev", "Herson" };
+                    citys = new string[] { "Kyiv", "Nikolaev", "Herson" };
                     break;
                 case "usa":
-                    citys = new List<string>() { "Washington", "New-York" };
+                    citys = new string[] { "Washington", "New-York" };
                     break;
                 case "hallownest":
-                    citys = new List<string>() { "City Tear" };
+                    citys = new string[] { "City Tear" };
                     break;
                 default:
                     return false;

@@ -35,6 +35,12 @@
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 
     <Platforms>AnyCPU;x64</Platforms>
+
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+
+    <PackageCertificateThumbprint>E0A828648211BC0DFDE967FA2A454140F877580A</PackageCertificateThumbprint>
+
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">

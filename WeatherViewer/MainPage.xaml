@@ -37,16 +37,18 @@
                         IsEnabled="False"
                     />
                 
-                <Label
-                    x:Name="TemperatureLabel"
-                    Text="Temperature will be here!"
-                    SemanticProperties.HeadingLevel="Level2"
-                    SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                    FontSize="18"/>
                 
             </StackLayout>
 
-                <Button
+            <Label
+                x:Name="TemperatureLabel"
+                Text="Temperature will be here!"
+                SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                FontSize="18"
+                HorizontalOptions="Center"/>
+
+            <Button
                 x:Name="WeatherButton"
                 Text="Check Weather"
                 IsEnabled="False"
