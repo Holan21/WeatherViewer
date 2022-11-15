@@ -19,7 +19,7 @@
                     Stroke="#808080"
                     StrokeThickness="2"
                     StrokeShape="RoundRectangle 20 , 20 , 20 , 20"
-                    Margin="10">
+                    Margin="5">
 
                     <Entry
                         x:Name="CountryEntry"
@@ -36,14 +36,14 @@
                     x:Name="CityLoadingIndecator"
                     IsRunning="False"
                     Margin="5"
+                    Scale="1.5"
                     IsVisible="false"/>
 
                 <Picker x:Name="CityPicker" 
                         IsEnabled="False"
                         FontSize="Medium"
                         HorizontalOptions="Center"
-                        Margin="5"
-                        />
+                        Margin="5"/>
             <VerticalStackLayout Padding="15">
                 <Label
                     x:Name="TemperatureLabel"
@@ -54,7 +54,6 @@
                     Margin="5"
                     HorizontalOptions="Center"
                     />
-
 
                 <Button
                     x:Name="WeatherButton"
@@ -71,6 +70,7 @@
                     x:Name="WeatherLoadingIndicator"
                     IsRunning="False" 
                     IsVisible="False"
+                    Scale="1.5"
                     FlexLayout.Grow="2"/>
             </VerticalStackLayout>
         </FlexLayout>
