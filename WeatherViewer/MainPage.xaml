@@ -1,61 +1,78 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WetherViewer.MainPage">
+             x:Class="WetherViewer.MainPage"
+             Title="Weather Viewer">
 
     <ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
 
-            <StackLayout Spacing="10" Orientation="Horizontal" HorizontalOptions="Center">
+            
+        <FlexLayout                   
+                    Direction="Row"
+                    Wrap="Wrap"
+                    AlignContent="Center"
+                    AlignItems="Center"
+                    JustifyContent="Center">
 
                 <Border
-                        Stroke="#808080"
-                        StrokeThickness="2"
-                        StrokeShape="RoundRectangle 20 , 20 , 20 , 20"
-                        x:Name="Border"
-                        HorizontalOptions="Center">
-                    <Entry
-                    x:Name="CountryEntry"
-                    MinimumWidthRequest="150"
-                    FontSize="18"
-                    Text=""
-                    Placeholder="Country:"
-                    Completed="OnCompletedCountryEntry"
-                    TextChanged="OnTextChangedCountryEntry" />
-                </Border>
+                    x:Name="Border"
+                    Stroke="#808080"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 20 , 20 , 20 , 20"
+                    Margin="10">
 
+                    <Entry
+                        x:Name="CountryEntry"
+                        Text=""
+                        FontSize="Medium"
+                        Placeholder="Country:" 
+                        MinimumWidthRequest="150"
+                        Completed="OnCompletedCountryEntry" 
+                        TextChanged="OnTextChangedCountryEntry"/>
+
+                </Border>
+                
                 <ActivityIndicator
                     x:Name="CityLoadingIndecator"
                     IsRunning="False"
-                    IsVisible="false" />
+                    Margin="5"
+                    IsVisible="false"/>
 
-                <Picker x:Name="CityPicker"
-                        IsEnabled="False" />
-            </StackLayout>
+                <Picker x:Name="CityPicker" 
+                        IsEnabled="False"
+                        FontSize="Medium"
+                        HorizontalOptions="Center"
+                        Margin="5"
+                        />
+            <VerticalStackLayout Padding="15">
+                <Label
+                    x:Name="TemperatureLabel"
+                    Text="Temperature will be here!"
+                    SemanticProperties.HeadingLevel="Level2"
+                    SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                    FontSize="Medium"
+                    Margin="5"
+                    HorizontalOptions="Center"
+                    />
 
-            <Label
-                x:Name="TemperatureLabel"
-                Text="Temperature will be here!"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
 
-            <Button
-                x:Name="WeatherButton"
-                Text="Check Weather"
-                IsEnabled="False"
-                SemanticProperties.Hint="Click button if you need check temperature"
-                Clicked="OnClickWeatherButton"
-                HorizontalOptions="Center" />
+                <Button
+                    x:Name="WeatherButton"
+                    Text="Check Weather"
+                    FontSize="Medium"
+                    IsEnabled="False"
+                    Margin="5"
+                    SemanticProperties.Hint="Click button if you need check temperature"
+                    Clicked="OnClickWeatherButton"
+                    FlexLayout.Grow="2"
+                    />
 
-            <ActivityIndicator
-                x:Name="WeatherLoadingIndicator"
-                IsRunning="False"
-                IsVisible="False" />
-        </VerticalStackLayout>
+                <ActivityIndicator
+                    x:Name="WeatherLoadingIndicator"
+                    IsRunning="False" 
+                    IsVisible="False"
+                    FlexLayout.Grow="2"/>
+            </VerticalStackLayout>
+        </FlexLayout>
     </ScrollView>
 </ContentPage>

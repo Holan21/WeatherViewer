@@ -92,7 +92,7 @@ public partial class MainPage : ContentPage
             Thread.Sleep(3000);
             return country.Trim().ToLower() switch
             {
-                "ukraine" => new string[] { "Kyiv", "Nikolaev", "Herson" },
+                "ukraine" => new string[] { "Kyiv", "Mykolaev", "Herson" },
                 "usa" => new string[] { "Washington", "New-York" },
                 "hallownest" => new string[] { "City Tear" },
                 _ => Array.Empty<string>(),
