@@ -8,10 +8,10 @@
             Spacing="25"
             Padding="30,0"
             VerticalOptions="Center">
-            
-            <StackLayout Spacing="10" Orientation="Horizontal" HorizontalOptions="Center" >
-                
-                <Border 
+
+            <StackLayout Spacing="10" Orientation="Horizontal" HorizontalOptions="Center">
+
+                <Border
                         Stroke="#808080"
                         StrokeThickness="2"
                         StrokeShape="RoundRectangle 20 , 20 , 20 , 20"
@@ -21,23 +21,19 @@
                     x:Name="CountryEntry"
                     MinimumWidthRequest="150"
                     FontSize="18"
-                    Placeholder="Country:" 
+                    Text=""
+                    Placeholder="Country:"
                     Completed="OnCompletedCountryEntry"
-                    TextChanged="OnTextChangedCountryEntry"
-                    />
+                    TextChanged="OnTextChangedCountryEntry" />
                 </Border>
-                
+
                 <ActivityIndicator
                     x:Name="CityLoadingIndecator"
                     IsRunning="False"
-                    IsVisible="false"
-                    />
-                
-                <Picker x:Name="CityPicker" 
-                        IsEnabled="False"
-                    />
-                
-                
+                    IsVisible="false" />
+
+                <Picker x:Name="CityPicker"
+                        IsEnabled="False" />
             </StackLayout>
 
             <Label
@@ -46,7 +42,7 @@
                 SemanticProperties.HeadingLevel="Level2"
                 SemanticProperties.Description="Welcome to dot net Multi platform App U I"
                 FontSize="18"
-                HorizontalOptions="Center"/>
+                HorizontalOptions="Center" />
 
             <Button
                 x:Name="WeatherButton"
@@ -54,14 +50,12 @@
                 IsEnabled="False"
                 SemanticProperties.Hint="Click button if you need check temperature"
                 Clicked="OnClickWeatherButton"
-                HorizontalOptions="Center"/>
+                HorizontalOptions="Center" />
 
-                <ActivityIndicator
+            <ActivityIndicator
                 x:Name="WeatherLoadingIndicator"
-                IsRunning="False" 
-                IsVisible="False"    
-                    />
-        
+                IsRunning="False"
+                IsVisible="False" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

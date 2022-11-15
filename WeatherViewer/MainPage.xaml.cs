@@ -13,7 +13,7 @@ public partial class MainPage : ContentPage
     private readonly Border _border;
     private readonly Brush DefaultColorBorder, ErrorColorBorder;
     private string[] citys;
-     
+
     public MainPage()
     {
         InitializeComponent();
@@ -24,9 +24,8 @@ public partial class MainPage : ContentPage
         _temperatureLabel = TemperatureLabel;
         _countryEntry = CountryEntry;
         _border = Border;
-        
+
         DefaultColorBorder = _border.Stroke;
-        _countryEntry.Text = "";
         ErrorColorBorder = new Color(255, 0, 0);
         _countryEntry.Focus();
     }
@@ -45,30 +44,36 @@ public partial class MainPage : ContentPage
 
     private async void OnCompletedCountryEntry(object sender, EventArgs e)
     {
-        Entry textField = (Entry)sender;
-        if (textField.Text.Trim() == string.Empty)
+        if (_countryEntry.Text.Trim() == string.Empty)
         {
-            await ErrorBorder(_border);
+            await SetErrorBorderAndAnimate(_border);
             return;
         }
-        textField.Unfocus();
+        _countryEntry.Unfocus();
         _cityPicker.IsVisible = false;
         _cityLoadingIndicator.IsVisible = true;
         _cityLoadingIndicator.IsRunning = true;
-        var isDone = await GetCitys(_countryEntry.Text);
+
+        var cityList = await GetCitys(_countryEntry.Text);
+        var isCityFounded = cityList.Length > 0;
+
         _cityLoadingIndicator.IsRunning = false;
         _cityLoadingIndicator.IsVisible = false;
-        _cityPicker.ItemsSource = citys;
+
+        _cityPicker.ItemsSource = cityList;
+        _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
+
         _cityPicker.SelectedIndex = 0;
         _cityPicker.IsVisible = true;
-        _cityPicker.IsEnabled = isDone;
-        _weatherButton.IsEnabled = isDone;
-        if (!isDone) await ErrorBorder(_border);
+        _cityPicker.IsEnabled = isCityFounded;
+        _weatherButton.IsEnabled = isCityFounded;
+
+        if (!isCityFounded) await SetErrorBorderAndAnimate(_border);
     }
 
     private void OnTextChangedCountryEntry(object sender, TextChangedEventArgs e)
     {
-        Entry textField = (Entry)sender;
+        var textField = (Entry)sender;
         _border.Stroke = DefaultColorBorder;
         if (textField.Text.Trim() != string.Empty) return;
         _cityPicker.IsEnabled = false;
@@ -80,28 +85,19 @@ public partial class MainPage : ContentPage
     }
 
     //TODO:SearchCity
-    private async Task<bool> GetCitys(string Country)
+    private async Task<string[]> GetCitys(string country)
     {
-        return await Task<bool>.Run(() =>
+        return await Task.Run(() =>
         {
             Thread.Sleep(3000);
-            switch (Country.Trim().ToLower())
+            return country.Trim().ToLower() switch
             {
-                case "ukraine":
-                    citys = new string[] { "Kyiv", "Nikolaev", "Herson" };
-                    break;
-                case "usa":
-                    citys = new string[] { "Washington", "New-York" };
-                    break;
-                case "hallownest":
-                    citys = new string[] { "City Tear" };
-                    break;
-                default:
-                    return false;
-            }
-            return true;
+                "ukraine" => new string[] { "Kyiv", "Nikolaev", "Herson" },
+                "usa" => new string[] { "Washington", "New-York" },
+                "hallownest" => new string[] { "City Tear" },
+                _ => Array.Empty<string>(),
+            };
         });
-
     }
 
     //TODO:call getWeather
@@ -114,7 +110,7 @@ public partial class MainPage : ContentPage
         });
     }
 
-    private async Task ErrorBorder(Border view)
+    private async Task SetErrorBorderAndAnimate(Border view)
     {
         view.Stroke = ErrorColorBorder;
         await AnimateError(view);
@@ -138,5 +134,4 @@ public partial class MainPage : ContentPage
 
         return true;
     }
-
 }

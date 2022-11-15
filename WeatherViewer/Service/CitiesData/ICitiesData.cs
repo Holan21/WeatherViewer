@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WetherViewer.Data.APIProviders
+namespace WetherViewer.Service.CitiesData
 {
-    internal interface ILocationAPI
+    internal interface ICitiesData
     {
     }
 }
