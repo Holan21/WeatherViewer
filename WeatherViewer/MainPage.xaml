@@ -6,44 +6,38 @@
 
     <ScrollView>
 
-            
-        <FlexLayout                   
-                    Direction="Row"
+        <FlexLayout Direction="Row"
                     Wrap="Wrap"
                     AlignContent="Center"
                     AlignItems="Center"
                     JustifyContent="Center">
 
-                <Border
-                    x:Name="Border"
+            <Border x:Name="BorderCounryEntry"
                     Stroke="#808080"
                     StrokeThickness="2"
                     StrokeShape="RoundRectangle 20 , 20 , 20 , 20"
                     Margin="5">
+                <Entry x:Name="CountryEntry"
+                       Text=""
+                       FontSize="Medium"
+                       Placeholder="Country:" 
+                       MinimumWidthRequest="150"
+                       Completed="OnCompletedCountryEntry" 
+                       TextChanged="OnTextChangedCountryEntry"/>
+            </Border>
 
-                    <Entry
-                        x:Name="CountryEntry"
-                        Text=""
-                        FontSize="Medium"
-                        Placeholder="Country:" 
-                        MinimumWidthRequest="150"
-                        Completed="OnCompletedCountryEntry" 
-                        TextChanged="OnTextChangedCountryEntry"/>
-
-                </Border>
-                
-                <ActivityIndicator
+            <ActivityIndicator 
                     x:Name="CityLoadingIndecator"
                     IsRunning="False"
                     Margin="5"
-                    Scale="1.5"
+                    Scale="1.25"
                     IsVisible="false"/>
 
-                <Picker x:Name="CityPicker" 
-                        IsEnabled="False"
-                        FontSize="Medium"
-                        HorizontalOptions="Center"
-                        Margin="5"/>
+            <Picker x:Name="CityPicker" 
+                    IsEnabled="False"
+                    FontSize="Medium"
+                    HorizontalOptions="Center"
+                    Margin="5"/>
             <VerticalStackLayout Padding="15">
                 <Label
                     x:Name="TemperatureLabel"
@@ -52,25 +46,23 @@
                     SemanticProperties.Description="Welcome to dot net Multi platform App U I"
                     FontSize="Medium"
                     Margin="5"
-                    HorizontalOptions="Center"
-                    />
+                    HorizontalOptions="Center"/>
 
                 <Button
                     x:Name="WeatherButton"
-                    Text="Check Weather"
+                    Text="Check Weather" 
                     FontSize="Medium"
                     IsEnabled="False"
                     Margin="5"
                     SemanticProperties.Hint="Click button if you need check temperature"
                     Clicked="OnClickWeatherButton"
-                    FlexLayout.Grow="2"
-                    />
+                    FlexLayout.Grow="2"/>
 
                 <ActivityIndicator
                     x:Name="WeatherLoadingIndicator"
                     IsRunning="False" 
                     IsVisible="False"
-                    Scale="1.5"
+                    Scale="1.25"
                     FlexLayout.Grow="2"/>
             </VerticalStackLayout>
         </FlexLayout>

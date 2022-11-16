@@ -10,9 +10,9 @@ public partial class MainPage : ContentPage
     private readonly ActivityIndicator _cityLoadingIndicator;
     private readonly Label _temperatureLabel;
     private readonly Entry _countryEntry;
-    private readonly Border _border;
+    private readonly Border _borderCountryEntry;
     private readonly Brush DefaultColorBorder, ErrorColorBorder;
-    private string[] citys;
+    private readonly List<string> _citys;
 
     public MainPage()
     {
@@ -23,30 +23,36 @@ public partial class MainPage : ContentPage
         _cityLoadingIndicator = CityLoadingIndecator;
         _temperatureLabel = TemperatureLabel;
         _countryEntry = CountryEntry;
-        _border = Border;
+        _borderCountryEntry = BorderCounryEntry;
 
-        DefaultColorBorder = _border.Stroke;
+        _citys = new List<string>() {"Write Country"};
+        _cityPicker.ItemsSource = _citys;
+        DefaultColorBorder = _borderCountryEntry.Stroke;
         ErrorColorBorder = new Color(255, 0, 0);
         _countryEntry.Focus();
     }
 
     private async void OnClickWeatherButton(object sender, EventArgs e)
     {
+        _temperatureLabel.IsVisible = false;
         _weatherButton.IsVisible = false;
         _weatherLoadingIndicator.IsRunning = true;
         _weatherLoadingIndicator.IsVisible = true;
+
         var Temperature = await GetWeather();
         _temperatureLabel.Text = Temperature.ToString() + "°C";
+
         _weatherButton.IsVisible = true;
         _weatherLoadingIndicator.IsRunning = false;
         _weatherLoadingIndicator.IsVisible = false;
+        _temperatureLabel.IsVisible = true;
     }
 
     private async void OnCompletedCountryEntry(object sender, EventArgs e)
     {
         if (_countryEntry.Text.Trim() == string.Empty)
         {
-            await SetErrorBorderAndAnimate(_border);
+            await SetErrorBorderAndAnimate(_borderCountryEntry);
             return;
         }
         _countryEntry.Unfocus();
@@ -55,12 +61,12 @@ public partial class MainPage : ContentPage
         _cityLoadingIndicator.IsRunning = true;
 
         var cityList = await GetCitys(_countryEntry.Text);
-        var isCityFounded = cityList.Length > 0;
+        var isCityFounded = cityList.Count > 0;
 
         _cityLoadingIndicator.IsRunning = false;
         _cityLoadingIndicator.IsVisible = false;
 
-        _cityPicker.ItemsSource = cityList;
+        _cityPicker.ItemsSource = cityList; 
         _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
 
         _cityPicker.SelectedIndex = 0;
@@ -68,35 +74,37 @@ public partial class MainPage : ContentPage
         _cityPicker.IsEnabled = isCityFounded;
         _weatherButton.IsEnabled = isCityFounded;
 
-        if (!isCityFounded) await SetErrorBorderAndAnimate(_border);
+        if (!isCityFounded) await SetErrorBorderAndAnimate(_borderCountryEntry);
     }
 
     private void OnTextChangedCountryEntry(object sender, TextChangedEventArgs e)
     {
-        var textField = (Entry)sender;
-        _border.Stroke = DefaultColorBorder;
-        if (textField.Text.Trim() != string.Empty) return;
+        _borderCountryEntry.Stroke = DefaultColorBorder;
+        if (_countryEntry.Text.Trim() != string.Empty) return;
         _cityPicker.IsEnabled = false;
-        citys = Array.Empty<string>();
+
+        _citys.Clear();
+
         _cityPicker.SelectedIndex = -1;
-        _cityPicker.ItemsSource = citys;
+        _cityPicker.ItemsSource = _citys;
         _weatherButton.IsEnabled = false;
         _temperatureLabel.Text = "Temperature will be here!";
     }
 
     //TODO:SearchCity
-    private async Task<string[]> GetCitys(string country)
+    private async Task<List<string>> GetCitys(string country)
     {
         return await Task.Run(() =>
         {
             Thread.Sleep(3000);
-            return country.Trim().ToLower() switch
+            _citys.Clear();
+            switch (country.Trim().ToLower())
             {
-                "ukraine" => new string[] { "Kyiv", "Mykolaev", "Herson" },
-                "usa" => new string[] { "Washington", "New-York" },
-                "hallownest" => new string[] { "City Tear" },
-                _ => Array.Empty<string>(),
-            };
+                case "ukraine":_citys.Add("Kyiv"); _citys.Add( "Mykolaev"); _citys.Add("Herson");break;
+                case "usa": _citys.Add("Washington"); _citys.Add("New-York"); break;
+                case "hallownest": _citys.Add("City Tear"); break;
+            }
+            return _citys;
         });
     }
 
