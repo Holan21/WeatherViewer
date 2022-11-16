@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.Metrics;
-
-namespace WetherViewer.Service.CitiesData
+﻿namespace WetherViewer.Service.CitiesData
 {
     internal class CitiesData : ICitiesData
     {

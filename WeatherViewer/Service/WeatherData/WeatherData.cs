@@ -18,9 +18,7 @@ namespace WetherViewer.Service.WeatherData
             return await Task.Run(() =>
             {
                 Thread.Sleep(3000);
-                Weather weather = new Weather();
-                weather.Temperature = new Random().Next(-50 , 50);
-                return weather;
+                return new Weather(new Random().Next(-50, 50));
             });
         }
     }
