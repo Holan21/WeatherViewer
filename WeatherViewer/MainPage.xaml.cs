@@ -1,6 +1,11 @@
 ﻿using Thread = System.Threading.Thread;
+using WetherViewer.Service.CitiesData;
+using Location = WetherViewer.Models.API.Location;
+using WetherViewer.Service.WeatherData;
+using WetherViewer.Models.API;
 
 namespace WetherViewer;
+
 
 public partial class MainPage : ContentPage
 {
@@ -12,11 +17,12 @@ public partial class MainPage : ContentPage
     private readonly Entry _countryEntry;
     private readonly Border _borderCountryEntry;
     private readonly Brush DefaultColorBorder, ErrorColorBorder;
-    private readonly List<string> _citys;
-
+    private readonly string[] _defaultCitysList;
+    private string _country;
     public MainPage()
     {
         InitializeComponent();
+        BindingContext = this;
         _weatherButton = WeatherButton;
         _cityPicker = CityPicker;
         _weatherLoadingIndicator = WeatherLoadingIndicator;
@@ -25,8 +31,9 @@ public partial class MainPage : ContentPage
         _countryEntry = CountryEntry;
         _borderCountryEntry = BorderCounryEntry;
 
-        _citys = new List<string>() {"Write Country"};
-        _cityPicker.ItemsSource = _citys;
+        _defaultCitysList = new string[] { "Write country" };
+        _cityPicker.ItemsSource = _defaultCitysList;
+        _cityPicker.SelectedIndex = 0;
         DefaultColorBorder = _borderCountryEntry.Stroke;
         ErrorColorBorder = new Color(255, 0, 0);
         _countryEntry.Focus();
@@ -40,7 +47,7 @@ public partial class MainPage : ContentPage
         _weatherLoadingIndicator.IsVisible = true;
 
         var Temperature = await GetWeather();
-        _temperatureLabel.Text = Temperature.ToString() + "°C";
+        _temperatureLabel.Text = Temperature.Temperature.ToString() + "°C";
 
         _weatherButton.IsVisible = true;
         _weatherLoadingIndicator.IsRunning = false;
@@ -59,14 +66,14 @@ public partial class MainPage : ContentPage
         _cityPicker.IsVisible = false;
         _cityLoadingIndicator.IsVisible = true;
         _cityLoadingIndicator.IsRunning = true;
-
-        var cityList = await GetCitys(_countryEntry.Text);
+        _country = _countryEntry.Text;
+        var cityList = await GetCitys(_country);
         var isCityFounded = cityList.Count > 0;
 
         _cityLoadingIndicator.IsRunning = false;
         _cityLoadingIndicator.IsVisible = false;
 
-        _cityPicker.ItemsSource = cityList; 
+        _cityPicker.ItemsSource = cityList;
         _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
 
         _cityPicker.SelectedIndex = 0;
@@ -83,39 +90,28 @@ public partial class MainPage : ContentPage
         if (_countryEntry.Text.Trim() != string.Empty) return;
         _cityPicker.IsEnabled = false;
 
-        _citys.Clear();
-
         _cityPicker.SelectedIndex = -1;
-        _cityPicker.ItemsSource = _citys;
+        _cityPicker.ItemsSource = _defaultCitysList;
         _weatherButton.IsEnabled = false;
         _temperatureLabel.Text = "Temperature will be here!";
     }
 
-    //TODO:SearchCity
     private async Task<List<string>> GetCitys(string country)
     {
         return await Task.Run(() =>
         {
             Thread.Sleep(3000);
-            _citys.Clear();
-            switch (country.Trim().ToLower())
-            {
-                case "ukraine":_citys.Add("Kyiv"); _citys.Add( "Mykolaev"); _citys.Add("Herson");break;
-                case "usa": _citys.Add("Washington"); _citys.Add("New-York"); break;
-                case "hallownest": _citys.Add("City Tear"); break;
-            }
-            return _citys;
+            CitiesData CityData = new CitiesData();
+            return CityData.getCitys(country);
         });
     }
 
-    //TODO:call getWeather
-    private async Task<int> GetWeather()
+    private async Task<Weather> GetWeather()
     {
-        return await Task.Run(() =>
-        {
-            Thread.Sleep(3000);
-            return new Random().Next(0, 50);
-        });
+        Location location = new Location(_country, (string)_cityPicker.SelectedItem);
+        WeatherData weatherData = new WeatherData(location);
+        Weather weather = await weatherData.GetWeather();
+        return weather;
     }
 
     private async Task SetErrorBorderAndAnimate(Border view)

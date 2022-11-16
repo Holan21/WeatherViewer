@@ -2,6 +2,7 @@
 {
     public class Weather
     {
+
         public int Temperature { get; set; } = int.MaxValue;
         public int Pressure { get; set; } = int.MaxValue;
         public int WindSpeed { get; set; } = int.MaxValue;

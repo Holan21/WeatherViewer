@@ -8,5 +8,6 @@ namespace WetherViewer.Service.CitiesData
 {
     internal interface ICitiesData
     {
+        List<string> getCitys(string coutnry);
     }
 }
