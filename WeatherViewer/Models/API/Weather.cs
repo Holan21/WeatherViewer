@@ -4,16 +4,22 @@
     {
         public Weather(int Temperature = int.MaxValue, int Pressure = int.MaxValue , int WindSpeed = int.MaxValue , string WeatherStatus = "", string WindDirection = "")
         {
-            this.Temperature = Temperature;
-            this.Pressure = Pressure;
-            this.WindSpeed = WindSpeed;
-            this.WeatherStatus = WeatherStatus;
-            this.WindDirection = WindDirection;
+            this._temperature = Temperature;
+            this._pressure = Pressure;
+            this._windSpeed = WindSpeed;
+            this._weatherStatus = WeatherStatus;
+            this._windDirection = WindDirection;
         }
-        public int Temperature { get; set; } = int.MaxValue;
-        public int Pressure { get; set; } = int.MaxValue;
-        public int WindSpeed { get; set; } = int.MaxValue;
-        public string WeatherStatus { get; set; } = string.Empty; //rain , snowly
-        public string WindDirection { get; set; } = string.Empty; //North, east
+        private int _temperature { get;} = int.MaxValue;
+        private int _pressure { get;} = int.MaxValue;
+        private int _windSpeed { get;} = int.MaxValue;
+        private string _weatherStatus { get;} = string.Empty; //rain , snowly
+        private string _windDirection { get;} = string.Empty; //North, east
+
+
+        public int getTemperature()
+        {
+            return _temperature; 
+        }
     }
 }

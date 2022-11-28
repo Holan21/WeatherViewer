@@ -1,15 +1,18 @@
-﻿namespace WetherViewer.Service.CitiesData
+﻿using WetherViewer.Data.APIProviders.City;
+
+namespace WetherViewer.Service.CitiesData
 {
     internal class CitiesData : ICitiesData
     {
-        public List<string> getCitys(string country)
+        public async Task<List<object>> getCitys(string country)
         {
-            List<string> _citys = new List<string>();
-            switch (country.Trim().ToLower())
+            List<object> _citys = new List<object>();
+            CityJSONAPI cityReqest = new CityJSONAPI();
+            var json = await cityReqest.sendReqestGetJSON(country);
+            var array = json.getData();
+            for (int i = 0; i < array.Length; i++)
             {
-                case "ukraine": _citys.Add("Kyiv"); _citys.Add("Mykolaev"); _citys.Add("Herson"); break;
-                case "usa": _citys.Add("Washington"); _citys.Add("New-York"); break;
-                case "hallownest": _citys.Add("City Tear"); break;
+                _citys.Add(array[i]);
             }
             return _citys;
         }

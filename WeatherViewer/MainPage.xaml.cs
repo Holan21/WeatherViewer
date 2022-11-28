@@ -1,12 +1,9 @@
 ﻿using Thread = System.Threading.Thread;
 using WetherViewer.Service.CitiesData;
-using Location = WetherViewer.Models.API.Location;
 using WetherViewer.Service.WeatherData;
 using WetherViewer.Models.API;
 
 namespace WetherViewer;
-
-
 public partial class MainPage : ContentPage
 {
     private readonly Button _weatherButton;
@@ -19,6 +16,7 @@ public partial class MainPage : ContentPage
     private readonly Brush DefaultColorBorder, ErrorColorBorder;
     private readonly string[] _defaultCitysList;
     private string _country;
+    private string _city;
     public MainPage()
     {
         InitializeComponent();
@@ -46,8 +44,8 @@ public partial class MainPage : ContentPage
         _weatherLoadingIndicator.IsRunning = true;
         _weatherLoadingIndicator.IsVisible = true;
 
-        var Temperature = await GetWeather();
-        _temperatureLabel.Text = Temperature.Temperature.ToString() + "°C";
+        Weather Temperature = await GetWeather();
+        _temperatureLabel.Text = $"{Temperature.getTemperature()}°C";
 
         _weatherButton.IsVisible = true;
         _weatherLoadingIndicator.IsRunning = false;
@@ -96,11 +94,10 @@ public partial class MainPage : ContentPage
         _temperatureLabel.Text = "Temperature will be here!";
     }
 
-    private async Task<List<string>> GetCitys(string country)
+    private async Task<List<object>> GetCitys(string country)
     {
         return await Task.Run(() =>
         {
-            Thread.Sleep(3000);
             CitiesData CityData = new CitiesData();
             return CityData.getCitys(country);
         });
@@ -108,8 +105,8 @@ public partial class MainPage : ContentPage
 
     private async Task<Weather> GetWeather()
     {
-        Location location = new Location(_country, (string)_cityPicker.SelectedItem);
-        WeatherData weatherData = new WeatherData(location);
+        _city = (string) _cityPicker.SelectedItem; 
+        WeatherData weatherData = new WeatherData(_city);
         Weather weather = await weatherData.GetWeather();
         return weather;
     }

@@ -1,16 +1,15 @@
 ﻿using WetherViewer.Models.API;
-using Location = WetherViewer.Models.API.Location;
 
 namespace WetherViewer.Service.WeatherData
 {
     public class WeatherData : IWeatherData
     {
 
-        private Location _location;
+        private readonly string _city;
 
-        public WeatherData(Location Location)
+        public WeatherData(string City)
         {
-            _location = Location;
+            _city = City;
         }
 
         public async Task<Weather> GetWeather()
