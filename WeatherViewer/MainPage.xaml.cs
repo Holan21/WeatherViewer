@@ -2,6 +2,7 @@
 using WetherViewer.Service.CitiesData;
 using WetherViewer.Service.WeatherData;
 using WetherViewer.Models.API;
+using WetherViewer.Service.CitiesData.Errros;
 
 namespace WetherViewer;
 public partial class MainPage : ContentPage
@@ -55,31 +56,34 @@ public partial class MainPage : ContentPage
 
     private async void OnCompletedCountryEntry(object sender, EventArgs e)
     {
-        if (_countryEntry.Text.Trim() == string.Empty)
+        try
         {
-            await SetErrorBorderAndAnimate(_borderCountryEntry);
-            return;
+            if (_countryEntry.Text.Trim() == string.Empty) throw new CountryNotFound("Country is Empty");
+            _countryEntry.Unfocus();
+            _cityPicker.IsVisible = false;
+            _cityLoadingIndicator.IsVisible = true;
+            _cityLoadingIndicator.IsRunning = true;
+            _country = _countryEntry.Text;
+            var cityList = await GetCitys(_country);
+
+            _cityLoadingIndicator.IsRunning = false;
+            _cityLoadingIndicator.IsVisible = false;
+
+            _cityPicker.ItemsSource = cityList;
+            _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
+
+            _cityPicker.SelectedIndex = 0;
+            _cityPicker.IsVisible = true;
+            _cityPicker.IsEnabled = true;
+            _weatherButton.IsEnabled = true;
         }
-        _countryEntry.Unfocus();
-        _cityPicker.IsVisible = false;
-        _cityLoadingIndicator.IsVisible = true;
-        _cityLoadingIndicator.IsRunning = true;
-        _country = _countryEntry.Text;
-        var cityList = await GetCitys(_country);
-        var isCityFounded = cityList.Count > 0;
-
-        _cityLoadingIndicator.IsRunning = false;
-        _cityLoadingIndicator.IsVisible = false;
-
-        _cityPicker.ItemsSource = cityList;
-        _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
-
-        _cityPicker.SelectedIndex = 0;
-        _cityPicker.IsVisible = true;
-        _cityPicker.IsEnabled = isCityFounded;
-        _weatherButton.IsEnabled = isCityFounded;
-
-        if (!isCityFounded) await SetErrorBorderAndAnimate(_borderCountryEntry);
+        catch (CountryNotFound)
+        {
+            _cityLoadingIndicator.IsRunning = false;
+            _cityLoadingIndicator.IsVisible = false;
+            _cityPicker.IsVisible = true;
+            await SetErrorBorderAndAnimate(_borderCountryEntry);
+        }
     }
 
     private void OnTextChangedCountryEntry(object sender, TextChangedEventArgs e)
