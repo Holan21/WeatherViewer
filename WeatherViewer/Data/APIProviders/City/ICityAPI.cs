@@ -9,6 +9,6 @@ namespace WetherViewer.Data.APIProviders.City
 {
     internal interface ICityAPI
     {
-        public Task<ResponeJSON> sendReqestGetJSON(string coutnry);
+        public Task<List<object>> sendReqest(string coutnry);
     }
 }
