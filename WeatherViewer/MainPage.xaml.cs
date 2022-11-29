@@ -3,6 +3,8 @@ using WetherViewer.Service.CitiesData;
 using WetherViewer.Service.WeatherData;
 using WetherViewer.Models.API;
 using WetherViewer.Service.CitiesData.Errros;
+using WetherViewer.Service.LocationData;
+using Location = WetherViewer.Models.API.Location;
 
 namespace WetherViewer;
 public partial class MainPage : ContentPage
@@ -64,7 +66,7 @@ public partial class MainPage : ContentPage
             _cityLoadingIndicator.IsVisible = true;
             _cityLoadingIndicator.IsRunning = true;
             _country = _countryEntry.Text;
-            var cityList = await GetCitys(_country);
+            var cityList = await GetCitys();
 
             _cityLoadingIndicator.IsRunning = false;
             _cityLoadingIndicator.IsVisible = false;
@@ -98,20 +100,22 @@ public partial class MainPage : ContentPage
         _temperatureLabel.Text = "Temperature will be here!";
     }
 
-    private async Task<List<object>> GetCitys(string country)
+    private async Task<List<object>> GetCitys()
     {
         return await Task.Run(() =>
         {
             CitiesData CityData = new CitiesData();
-            return CityData.getCitys(country);
+            return CityData.getCitys(_country);
         });
     }
 
     private async Task<Weather> GetWeather()
     {
-        _city = (string) _cityPicker.SelectedItem; 
-        WeatherData weatherData = new WeatherData(_city);
-        Weather weather = await weatherData.GetWeather();
+        _city = (string) _cityPicker.SelectedItem;
+        LocationData LocationData = new LocationData();
+        Location location = await LocationData.GetLocation(_country);
+        WeatherData weatherData = new WeatherData();
+        Weather weather = await weatherData.GetWeather(location);
         return weather;
     }
 

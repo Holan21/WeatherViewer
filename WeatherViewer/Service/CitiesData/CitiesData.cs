@@ -1,5 +1,5 @@
 ﻿using WetherViewer.Data.APIProviders.City;
-using WetherViewer.Service.CitiesData.Errros;
+
 namespace WetherViewer.Service.CitiesData
 {
     internal class CitiesData : ICitiesData

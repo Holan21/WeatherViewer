@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using WetherViewer.Models.API.JSON;
+using WetherViewer.Models.Respones.RepsoneCities;
 using WetherViewer.Service.CitiesData.Errros;
 
 namespace WetherViewer.Data.APIProviders.City
@@ -17,10 +17,10 @@ namespace WetherViewer.Data.APIProviders.City
                 {
                     {"country" ,coutnry},
                 };
-                var content = new FormUrlEncodedContent(values);
-                var respone = await client.PostAsync(_url, content);
-                var json = JsonSerializer.Deserialize<ResponeJSON>(respone.Content.ReadAsStream());
-                if (json.getMsg() == "country not found") { throw new CountryNotFound("Can't found country"); }
+                var body = new FormUrlEncodedContent(values);
+                var respone = await client.PostAsync(_url, body);
+                var json = JsonSerializer.Deserialize<ResponeCitiesJSON>(await respone.Content.ReadAsStreamAsync());
+                if (json.getMsg() == "country not found")  throw new CountryNotFound("Can't found country"); 
                 var cities = json.getData();
                 for (int i = 0; i < cities.Length; i++) listCities.Add(cities[i]);
             });

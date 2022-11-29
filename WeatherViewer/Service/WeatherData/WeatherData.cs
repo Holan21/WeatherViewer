@@ -1,24 +1,13 @@
-﻿using WetherViewer.Models.API;
+﻿using WetherViewer.Data.APIProviders.Weather;
+using WetherViewer.Models.API;
 
 namespace WetherViewer.Service.WeatherData
 {
     public class WeatherData : IWeatherData
     {
-
-        private readonly string _city;
-
-        public WeatherData(string City)
+        public async Task<Weather> GetWeather(Models.API.Location location)
         {
-            _city = City;
-        }
-
-        public async Task<Weather> GetWeather()
-        {
-            return await Task.Run(() =>
-            {
-                Thread.Sleep(3000);
-                return new Weather(new Random().Next(-50, 50));
-            });
+            return await new WeatherJSONAPI().sendReqest(location);
         }
     }
 }
