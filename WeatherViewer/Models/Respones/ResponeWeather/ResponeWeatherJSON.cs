@@ -8,20 +8,22 @@ namespace WetherViewer.Models.Respones.ResponeWeather
 {
     internal class ResponeWeatherJSON
     {
-        public object coord { get; set; } = new object();
-        public object weather { get; set; } = new object();
-        public object @base { get; set; } = new object();
-        public object main { get; set; } = new object();
-        public object visibility { get; set; } = new object();
-        public object wind { get; set; } = new object();
-        public object clouds { get; set; } = new object();
-        public object rain { get; set; } = new object();
-        public object snow { get; set; } = new object();
-        public object dt { get; set; } = new object();
-        public object sys { get; set; } = new object();
-        public object timezone { get; set; } = new object();
-        public object id { get; set; } = new object();
-        public object name { get; set; } = new object();
-        public object cod { get; set; } = new object();
+        // TODO: Указать правильный тип данных
+
+        public object coord { get; set; } = new();
+        public object weather { get; set; } = new();
+        public object @base { get; set; } = new(); // TODO: Убрать!
+        public object main { get; set; } = new();
+        public object visibility { get; set; } = new();
+        public object wind { get; set; } = new();
+        public object clouds { get; set; } = new();
+        public object rain { get; set; } = new();
+        public object snow { get; set; } = new();
+        public object dt { get; set; } = new();
+        public object sys { get; set; } = new();
+        public object timezone { get; set; } = new();
+        public object id { get; set; } = new();
+        public object name { get; set; } = new();
+        public object cod { get; set; } = new();
     }
 }

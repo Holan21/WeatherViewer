@@ -1,7 +1,7 @@
 ﻿namespace WetherViewer.Service.LocationData
 {
-    internal interface ILocationData
+    public interface ILocationData
     {
-        public Task<Models.API.Location> GetLocation( string Country);
+        public Task<Models.API.LocationData> GetLocation(string country);
     }
 }

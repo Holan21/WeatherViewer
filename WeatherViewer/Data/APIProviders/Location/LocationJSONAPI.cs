@@ -1,4 +1,8 @@
-﻿using System.Text.Json;
+﻿using Android.OS;
+
+using System.Text.Json;
+
+using WetherViewer.Models.API;
 using WetherViewer.Service.LocationData;
 
 namespace WetherViewer.Data.APIProviders.Location
@@ -7,22 +11,20 @@ namespace WetherViewer.Data.APIProviders.Location
     {
         private readonly string _url = @"https://countriesnow.space/api/v0.1/countries/positions";
 
-        public async Task<Models.API.Location> GetLocation( string Country)
+        public async Task<LocationData> GetLocation(string country)
         {
-            Models.API.Location lolcationData = new Models.API.Location();
-            Dictionary<string, string> bodyDictionary = new Dictionary<string, string>
+            Dictionary<string, string> bodyDictionary = new()
             {
-                { "country", Country},
+                { "country", country },
             };
-            await Task.Run(async () =>
-            {
-                HttpClient client = new HttpClient();
-                var body = new FormUrlEncodedContent(bodyDictionary);
-                var respone = await client.PostAsync(_url , body);
-                string jsonString = await respone.Content.ReadAsStringAsync();
-                lolcationData = JsonSerializer.Deserialize<Models.API.Location>(await respone.Content.ReadAsStreamAsync());
-            });
-            return lolcationData;
+
+            HttpClient client = new();
+
+            var body = new FormUrlEncodedContent(bodyDictionary);
+            var respone = await client.PostAsync(_url, body);
+
+            var locationData = JsonSerializer.Deserialize<BaseResponse<LocationData>>(await respone.Content.ReadAsStreamAsync());
+            return locationData.Data;
         }
     }
 }

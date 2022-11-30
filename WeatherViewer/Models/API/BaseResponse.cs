@@ -2,7 +2,7 @@
 
 namespace WetherViewer.Models.API
 {
-    public class Location
+    public class BaseResponse<T>
     {
         [JsonPropertyName("msg")]
         public string Msg { get; set; } = string.Empty;
@@ -11,6 +11,6 @@ namespace WetherViewer.Models.API
         public bool IsError { get; set; } = false;
 
         [JsonPropertyName("data")]
-        public LocationData Data { get; set; } = new();
+        public T Data { get; set; }
     }
 }

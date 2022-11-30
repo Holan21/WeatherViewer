@@ -5,8 +5,11 @@ using WetherViewer.Models.API;
 using WetherViewer.Service.CitiesData.Errros;
 using WetherViewer.Service.LocationData;
 using Location = WetherViewer.Models.API.Location;
+using Android.App;
+using Android.OS;
 
 namespace WetherViewer;
+
 public partial class MainPage : ContentPage
 {
     private readonly Button _weatherButton;
@@ -18,11 +21,18 @@ public partial class MainPage : ContentPage
     private readonly Border _borderCountryEntry;
     private readonly Brush _defaultColorBorder, _errorColorBorder;
     private readonly string[] _defaultCitysList;
-    private string _country , _city;
- 
-    public MainPage()
+    private string _country, _city;
+
+    private readonly ICitiesData _citiesData;
+    private readonly IWeatherData _weatherData;
+
+    public MainPage(ICitiesData citiesData, IWeatherData weatherData)
     {
         InitializeComponent();
+
+        _citiesData = citiesData;
+        _weatherData = weatherData;
+
         BindingContext = this;
         _weatherButton = WeatherButton;
         _cityPicker = CityPicker;
@@ -42,14 +52,15 @@ public partial class MainPage : ContentPage
 
     private async void OnClickWeatherButton(object sender, EventArgs e)
     {
+        _city = (string)_cityPicker.SelectedItem;
+
+        var weather = await _weatherData.GetWeather();
+        _temperatureLabel.Text = $"{weather.Temperature}°C";
+
         _temperatureLabel.IsVisible = false;
         _weatherButton.IsVisible = false;
         _weatherLoadingIndicator.IsRunning = true;
         _weatherLoadingIndicator.IsVisible = true;
-
-        Weather Temperature = await GetWeather();
-        _temperatureLabel.Text = $"{Temperature.getTemperature()}°C";
-
         _weatherButton.IsVisible = true;
         _weatherLoadingIndicator.IsRunning = false;
         _weatherLoadingIndicator.IsVisible = false;
@@ -66,7 +77,7 @@ public partial class MainPage : ContentPage
             _cityLoadingIndicator.IsVisible = true;
             _cityLoadingIndicator.IsRunning = true;
             _country = _countryEntry.Text;
-            var cityList = await GetCitys();
+            var cityList = await _citiesData.GetCities(_country);
 
             _cityLoadingIndicator.IsRunning = false;
             _cityLoadingIndicator.IsVisible = false;
@@ -84,6 +95,7 @@ public partial class MainPage : ContentPage
             _cityLoadingIndicator.IsRunning = false;
             _cityLoadingIndicator.IsVisible = false;
             _cityPicker.IsVisible = true;
+
             await SetErrorBorderAndAnimate(_borderCountryEntry);
         }
     }
@@ -97,50 +109,58 @@ public partial class MainPage : ContentPage
         _cityPicker.SelectedIndex = -1;
         _cityPicker.ItemsSource = _defaultCitysList;
         _weatherButton.IsEnabled = false;
-        _temperatureLabel.Text = "Temperature will be here!";
+        _temperatureLabel.Text = "weather will be here!";
     }
 
-    private async Task<List<string>> GetCitys()
+    //private async Task<List<string>> GetCitys()
+    //{
+    //    return await Task.Run(() =>
+    //    {
+    //        CitiesData CityData = new CitiesData();
+    //        return CityData.GetCities(_country);
+    //    });
+    //}
+
+    //// TODO: Убрать!
+    //private async Task<Weather> GetWeather()
+    //{
+    //    _city = (string)_cityPicker.SelectedItem;
+
+    //    var weather = await _weatherData.GetWeather();
+    //    return weather;
+    //}
+
+    private async Task SetErrorBorderAndAnimate(Border border)
     {
-        return await Task.Run(() =>
+        if (border != null)
         {
-            CitiesData CityData = new CitiesData();
-            return CityData.GetCities(_country);
-        });
-    }
+            border.Stroke = _errorColorBorder;
 
-    private async Task<Weather> GetWeather()
-    {
-        _city = (string) _cityPicker.SelectedItem;
-        LocationData LocationData = new LocationData();
-        Location location = await LocationData.GetLocation(_country);
-        WeatherData weatherData = new WeatherData();
-        Weather weather = await weatherData.GetWeather(location);
-        return weather;
-    }
-
-    private async Task SetErrorBorderAndAnimate(Border view)
-    {
-        view.Stroke = _errorColorBorder;
-        await AnimateError(view);
-    }
-
-    private async Task<bool> AnimateError(VisualElement view)
-    {
-        try
-        {
             for (int i = 4; i > 0; i--)
             {
-                await view.TranslateTo(i, 0, 40);
-                await view.TranslateTo(-i, 0, 80);
-                await view.TranslateTo(0, 0, 40);
+                await border.TranslateTo(i, 0, 40);
+                await border.TranslateTo(-i, 0, 80);
+                await border.TranslateTo(0, 0, 40);
             }
         }
-        catch (Exception)
-        {
-            return false;
-        }
-
-        return true;
     }
+
+    //private async Task<bool> AnimateError(VisualElement border)
+    //{
+    //    try
+    //    {
+    //        for (int i = 4; i > 0; i--)
+    //        {
+    //            await border.TranslateTo(i, 0, 40);
+    //            await border.TranslateTo(-i, 0, 80);
+    //            await border.TranslateTo(0, 0, 40);
+    //        }
+    //    }
+    //    catch (Exception)
+    //    {
+    //        return false;
+    //    }
+
+    //    return true;
+    //}
 }
