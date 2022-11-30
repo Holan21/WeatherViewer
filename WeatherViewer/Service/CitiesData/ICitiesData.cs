@@ -1,7 +1,7 @@
 ﻿namespace WetherViewer.Service.CitiesData
 {
-    internal interface ICitiesData
+    internal interface ICities
     {
-        Task<List<object>> getCitys(string coutnry);
+        Task<List<string>> GetCities(string coutnry);
     }
 }

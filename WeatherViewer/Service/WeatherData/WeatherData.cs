@@ -7,7 +7,7 @@ namespace WetherViewer.Service.WeatherData
     {
         public async Task<Weather> GetWeather(Models.API.Location location)
         {
-            return await new WeatherJSONAPI().sendReqest(location);
+            return await new WeatherJSONAPI().SendReqest(location);
         }
     }
 }

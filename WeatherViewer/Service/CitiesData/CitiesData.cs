@@ -2,12 +2,12 @@
 
 namespace WetherViewer.Service.CitiesData
 {
-    internal class CitiesData : ICitiesData
+    internal class CitiesData : ICities
     {
-        public async Task<List<object>> getCitys(string country)
+        public async Task<List<string>> GetCities(string country)
         {
             CityJSONAPI cityReqest = new CityJSONAPI();
-            return await cityReqest.sendReqest(country);
+            return await cityReqest.GetCities(country);
         }
     }
 }

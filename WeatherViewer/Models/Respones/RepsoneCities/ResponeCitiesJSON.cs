@@ -1,16 +1,16 @@
 ﻿
+using System.Text.Json.Serialization;
+
 namespace WetherViewer.Models.Respones.RepsoneCities
 {
-    internal class ResponeCitiesJSON 
+    public class ResponeCitiesJSON
     {
-        public bool error { get; set; } = true;
-        public string msg { get; set; } = string.Empty;
+        [JsonPropertyName("error")]
+        public bool Error { get; set; } = true;
+        [JsonPropertyName("msg")]
+        public string Msg { get; set; } = string.Empty;
+        [JsonPropertyName("data")]
+        public List<string> Data { get; set; } = new List<string>(); 
 
-        public string getMsg() { return msg; }
-
-        public bool getError() { return error; }
-        public object[] data { get; set; } = new object[0];
-
-        public object[] getData() { return data; }
     }
 }

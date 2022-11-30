@@ -16,10 +16,10 @@ public partial class MainPage : ContentPage
     private readonly Label _temperatureLabel;
     private readonly Entry _countryEntry;
     private readonly Border _borderCountryEntry;
-    private readonly Brush DefaultColorBorder, ErrorColorBorder;
+    private readonly Brush _defaultColorBorder, _errorColorBorder;
     private readonly string[] _defaultCitysList;
-    private string _country;
-    private string _city;
+    private string _country , _city;
+ 
     public MainPage()
     {
         InitializeComponent();
@@ -35,8 +35,8 @@ public partial class MainPage : ContentPage
         _defaultCitysList = new string[] { "Write country" };
         _cityPicker.ItemsSource = _defaultCitysList;
         _cityPicker.SelectedIndex = 0;
-        DefaultColorBorder = _borderCountryEntry.Stroke;
-        ErrorColorBorder = new Color(255, 0, 0);
+        _defaultColorBorder = _borderCountryEntry.Stroke;
+        _errorColorBorder = new Color(255, 0, 0);
         _countryEntry.Focus();
     }
 
@@ -90,7 +90,7 @@ public partial class MainPage : ContentPage
 
     private void OnTextChangedCountryEntry(object sender, TextChangedEventArgs e)
     {
-        _borderCountryEntry.Stroke = DefaultColorBorder;
+        _borderCountryEntry.Stroke = _defaultColorBorder;
         if (_countryEntry.Text.Trim() != string.Empty) return;
         _cityPicker.IsEnabled = false;
 
@@ -100,12 +100,12 @@ public partial class MainPage : ContentPage
         _temperatureLabel.Text = "Temperature will be here!";
     }
 
-    private async Task<List<object>> GetCitys()
+    private async Task<List<string>> GetCitys()
     {
         return await Task.Run(() =>
         {
             CitiesData CityData = new CitiesData();
-            return CityData.getCitys(_country);
+            return CityData.GetCities(_country);
         });
     }
 
@@ -121,7 +121,7 @@ public partial class MainPage : ContentPage
 
     private async Task SetErrorBorderAndAnimate(Border view)
     {
-        view.Stroke = ErrorColorBorder;
+        view.Stroke = _errorColorBorder;
         await AnimateError(view);
     }
 

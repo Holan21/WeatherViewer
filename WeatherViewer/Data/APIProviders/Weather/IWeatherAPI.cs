@@ -8,6 +8,6 @@ namespace WetherViewer.Data.APIProviders.Weather
 {
     internal interface IWeatherAPI
     {
-        public Task<Models.API.Weather> sendReqest(Models.API.Location location); 
+        public Task<Models.API.Weather> SendReqest(Models.API.Location location); 
     }
 }
