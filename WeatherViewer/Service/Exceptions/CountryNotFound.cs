@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace WetherViewer.Service.CitiesData.Errros
+namespace WetherViewer.Service.Errors
 {
     // TODO: Вынести в отдельную папку
     internal class CountryNotFound : Exception

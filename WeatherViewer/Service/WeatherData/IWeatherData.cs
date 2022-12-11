@@ -4,6 +4,6 @@ namespace WetherViewer.Service.WeatherData
 {
     public interface IWeatherData
     {
-        public Task<Weather> GetWeather(Models.API.Location location);
+        public Task<Weather> GetWeather();
     }
 }

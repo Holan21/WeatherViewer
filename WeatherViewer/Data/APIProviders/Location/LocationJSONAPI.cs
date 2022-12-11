@@ -1,7 +1,4 @@
-﻿using Android.OS;
-
-using System.Text.Json;
-
+﻿using System.Text.Json;
 using WetherViewer.Models.API;
 using WetherViewer.Service.LocationData;
 

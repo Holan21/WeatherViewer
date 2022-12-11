@@ -2,7 +2,7 @@
 
 using WetherViewer.Models.API;
 using WetherViewer.Service.CitiesData;
-using WetherViewer.Service.CitiesData.Errros;
+using WetherViewer.Service.Errors;
 
 namespace WetherViewer.Data.APIProviders.City
 {

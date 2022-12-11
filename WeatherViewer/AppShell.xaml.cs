@@ -1,4 +1,5 @@
-﻿using WetherViewer.Service.WeatherData;
+﻿using WetherViewer.Service.CitiesData;
+using WetherViewer.Service.WeatherData;
 
 namespace WetherViewer;
 

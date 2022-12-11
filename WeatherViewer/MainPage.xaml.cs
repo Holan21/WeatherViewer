@@ -2,11 +2,11 @@
 using WetherViewer.Service.CitiesData;
 using WetherViewer.Service.WeatherData;
 using WetherViewer.Models.API;
-using WetherViewer.Service.CitiesData.Errros;
 using WetherViewer.Service.LocationData;
 using Location = WetherViewer.Models.API.Location;
-using Android.App;
-using Android.OS;
+using WetherViewer.Service.Errors;
+using WetherViewer.Data.APIProviders.City;
+using WetherViewer.Data.APIProviders.Weather;
 
 namespace WetherViewer;
 
@@ -26,7 +26,7 @@ public partial class MainPage : ContentPage
     private readonly ICitiesData _citiesData;
     private readonly IWeatherData _weatherData;
 
-    public MainPage(ICitiesData citiesData, IWeatherData weatherData)
+    public MainPage(ICitiesData citiesData ,IWeatherData weatherData)
     {
         InitializeComponent();
 
@@ -52,8 +52,6 @@ public partial class MainPage : ContentPage
 
     private async void OnClickWeatherButton(object sender, EventArgs e)
     {
-        _city = (string)_cityPicker.SelectedItem;
-
         var weather = await _weatherData.GetWeather();
         _temperatureLabel.Text = $"{weather.Temperature}°C";
 
@@ -99,7 +97,10 @@ public partial class MainPage : ContentPage
             await SetErrorBorderAndAnimate(_borderCountryEntry);
         }
     }
-
+    private void OnSelectedItem(object sender, TextChangedEventArgs e)
+    {
+        _city = (string)_cityPicker.SelectedItem;
+    }
     private void OnTextChangedCountryEntry(object sender, TextChangedEventArgs e)
     {
         _borderCountryEntry.Stroke = _defaultColorBorder;
@@ -121,14 +122,6 @@ public partial class MainPage : ContentPage
     //    });
     //}
 
-    //// TODO: Убрать!
-    //private async Task<Weather> GetWeather()
-    //{
-    //    _city = (string)_cityPicker.SelectedItem;
-
-    //    var weather = await _weatherData.GetWeather();
-    //    return weather;
-    //}
 
     private async Task SetErrorBorderAndAnimate(Border border)
     {

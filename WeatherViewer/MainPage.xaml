@@ -37,7 +37,8 @@
                     IsEnabled="False"
                     FontSize="Medium"
                     HorizontalOptions="Center"
-                        Margin="5"/>
+                    Margin="5"
+                    SelectedIndexChanged="OnSelectedItem"/>
             <VerticalStackLayout Padding="15">
                 <Label
                     x:Name="TemperatureLabel"

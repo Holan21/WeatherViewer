@@ -13,17 +13,22 @@ public static class MauiProgram
     {
         var builder = MauiApp.CreateBuilder();
 
-        builder.Services.AddScoped<IWeatherData, WeatherJSONAPI>();
-        builder.Services.AddScoped<ICitiesData, CityJSONAPI>();
-        builder.Services.AddScoped<ILocationData, LocationJSONAPI>();
-
         builder
             .UseMauiApp<App>()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-            });
+            })
+            .RegisterAppServices();
         return builder.Build();
+    }
+    private static MauiAppBuilder RegisterAppServices(this MauiAppBuilder mauiAppBuilder)
+    {
+        mauiAppBuilder.Services.AddScoped<ILocationData, LocationJSONAPI>();
+        mauiAppBuilder.Services.AddScoped<ICitiesData, CityJSONAPI>();
+        mauiAppBuilder.Services.AddScoped<IWeatherData, WeatherJSONAPI>();
+
+        return mauiAppBuilder;
     }
 }

@@ -14,9 +14,9 @@ namespace WetherViewer.Data.APIProviders.Weather
             _locationData = locationData;
         }
 
-        public Task<Models.API.Weather> GetWeather(Models.API.Location location)
+        public Task<Models.API.Weather> GetWeather()
         {
-            throw new NotImplementedException();
+            throw Exception;
         }
 
         //public async Task<Models.API.Weather> SendReqest()
