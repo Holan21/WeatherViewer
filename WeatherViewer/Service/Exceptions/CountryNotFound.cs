@@ -2,7 +2,6 @@
 
 namespace WetherViewer.Service.Errors
 {
-    // TODO: Вынести в отдельную папку
     internal class CountryNotFound : Exception
     {
         public CountryNotFound()

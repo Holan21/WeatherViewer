@@ -16,7 +16,7 @@ namespace WetherViewer.Data.APIProviders.Weather
 
         public Task<Models.API.Weather> GetWeather()
         {
-            throw Exception;
+            throw new Exception();
         }
 
         //public async Task<Models.API.Weather> SendReqest()
