@@ -1,7 +1,4 @@
-﻿using WetherViewer.Service.CitiesData;
-using WetherViewer.Service.WeatherData;
-
-namespace WetherViewer;
+﻿namespace WetherViewer;
 
 public partial class AppShell : Shell
 {

@@ -9,9 +9,8 @@ namespace WetherViewer.Data.APIProviders.Weather
         private readonly string _apikey = "751bc61019f1d402468490157e578fa2";
         private readonly ILocationData _locationData;
 
-        public WeatherJSONAPI(ILocationData locationData)
+        public WeatherJSONAPI()
         {
-            _locationData = locationData;
         }
 
         public Task<Models.API.Weather> GetWeather()

@@ -1,12 +1,7 @@
-﻿using Thread = System.Threading.Thread;
+﻿using WetherViewer.Service;
 using WetherViewer.Service.CitiesData;
-using WetherViewer.Service.WeatherData;
-using WetherViewer.Models.API;
-using WetherViewer.Service.LocationData;
-using Location = WetherViewer.Models.API.Location;
 using WetherViewer.Service.Errors;
-using WetherViewer.Data.APIProviders.City;
-using WetherViewer.Data.APIProviders.Weather;
+using WetherViewer.Service.WeatherData;
 
 namespace WetherViewer;
 
@@ -26,14 +21,13 @@ public partial class MainPage : ContentPage
     private readonly ICitiesData _citiesData;
     private readonly IWeatherData _weatherData;
 
-    public MainPage(ICitiesData citiesData ,IWeatherData weatherData)
+    public MainPage()
     {
         InitializeComponent();
 
-        _citiesData = citiesData;
-        _weatherData = weatherData;
+        _citiesData = ServiceManager.GetSerive<ICitiesData>();
+        _weatherData = ServiceManager.GetSerive<IWeatherData>();
 
-        BindingContext = this;
         _weatherButton = WeatherButton;
         _cityPicker = CityPicker;
         _weatherLoadingIndicator = WeatherLoadingIndicator;
@@ -53,7 +47,7 @@ public partial class MainPage : ContentPage
     private async void OnClickWeatherButton(object sender, EventArgs e)
     {
         var weather = await _weatherData.GetWeather();
-        _temperatureLabel.Text = $"{weather.Temperature}°C";
+        _temperatureLabel.Text = $"{weather.Main.Temperature}°C";
 
         _temperatureLabel.IsVisible = false;
         _weatherButton.IsVisible = false;
@@ -94,13 +88,15 @@ public partial class MainPage : ContentPage
             _cityLoadingIndicator.IsVisible = false;
             _cityPicker.IsVisible = true;
 
-            await SetErrorBorderAndAnimate(_borderCountryEntry);
+            _borderCountryEntry.Stroke = _errorColorBorder;
+            await AnimateError(_borderCountryEntry);
         }
     }
-    private void OnSelectedItem(object sender, TextChangedEventArgs e)
+    private void OnSelectedItem(object sender, EventArgs e)
     {
         _city = (string)_cityPicker.SelectedItem;
     }
+
     private void OnTextChangedCountryEntry(object sender, TextChangedEventArgs e)
     {
         _borderCountryEntry.Stroke = _defaultColorBorder;
@@ -113,22 +109,10 @@ public partial class MainPage : ContentPage
         _temperatureLabel.Text = "weather will be here!";
     }
 
-    //private async Task<List<string>> GetCitys()
-    //{
-    //    return await Task.Run(() =>
-    //    {
-    //        CitiesData CityData = new CitiesData();
-    //        return CityData.GetCities(_country);
-    //    });
-    //}
-
-
-    private async Task SetErrorBorderAndAnimate(Border border)
+    private async Task AnimateError(VisualElement border)
     {
-        if (border != null)
+        try
         {
-            border.Stroke = _errorColorBorder;
-
             for (int i = 4; i > 0; i--)
             {
                 await border.TranslateTo(i, 0, 40);
@@ -136,24 +120,9 @@ public partial class MainPage : ContentPage
                 await border.TranslateTo(0, 0, 40);
             }
         }
+        catch (Exception)
+        {
+            throw new Exception();
+        }
     }
-
-    //private async Task<bool> AnimateError(VisualElement border)
-    //{
-    //    try
-    //    {
-    //        for (int i = 4; i > 0; i--)
-    //        {
-    //            await border.TranslateTo(i, 0, 40);
-    //            await border.TranslateTo(-i, 0, 80);
-    //            await border.TranslateTo(0, 0, 40);
-    //        }
-    //    }
-    //    catch (Exception)
-    //    {
-    //        return false;
-    //    }
-
-    //    return true;
-    //}
 }

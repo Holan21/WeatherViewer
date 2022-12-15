@@ -6,7 +6,7 @@ using WetherViewer.Service.Errors;
 
 namespace WetherViewer.Data.APIProviders.City
 {
-    internal class CityJSONAPI : ICitiesData
+    internal class CitiesJSONAPI : ICitiesData
     {
         private readonly string _url = @"https://countriesnow.space/api/v0.1/countries/cities";
 
