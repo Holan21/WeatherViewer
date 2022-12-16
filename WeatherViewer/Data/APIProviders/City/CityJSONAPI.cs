@@ -1,8 +1,7 @@
 ﻿using System.Text.Json;
-
-using WetherViewer.Models.API;
+using WetherViewer.Models.API.Location;
 using WetherViewer.Service.CitiesData;
-using WetherViewer.Service.Errors;
+using WetherViewer.Service.Exceptions;
 
 namespace WetherViewer.Data.APIProviders.City
 {
@@ -10,14 +9,14 @@ namespace WetherViewer.Data.APIProviders.City
     {
         private readonly string _url = @"https://countriesnow.space/api/v0.1/countries/cities";
 
-        public async Task<List<string>> GetCities(string coutnry)
+        public async Task<List<string>> GetCities(string city)
         {
             HttpClient client = new();
 
             var body = new FormUrlEncodedContent(
                 new Dictionary<string, string>
                 {
-                    {"country" ,coutnry},
+                    {"country" , city},
                 }
             );
 

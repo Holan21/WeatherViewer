@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace WetherViewer.Service.Errors
+namespace WetherViewer.Service.Exceptions
 {
     internal class CountryNotFound : Exception
     {

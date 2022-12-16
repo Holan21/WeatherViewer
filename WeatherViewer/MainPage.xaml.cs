@@ -1,6 +1,6 @@
 ﻿using WetherViewer.Service;
 using WetherViewer.Service.CitiesData;
-using WetherViewer.Service.Errors;
+using WetherViewer.Service.Exceptions;
 using WetherViewer.Service.WeatherData;
 
 namespace WetherViewer;
@@ -46,13 +46,14 @@ public partial class MainPage : ContentPage
 
     private async void OnClickWeatherButton(object sender, EventArgs e)
     {
-        var weather = await _weatherData.GetWeather();
-        _temperatureLabel.Text = $"{weather.Main.Temperature}°C";
-
         _temperatureLabel.IsVisible = false;
         _weatherButton.IsVisible = false;
         _weatherLoadingIndicator.IsRunning = true;
         _weatherLoadingIndicator.IsVisible = true;
+
+        var weather = await _weatherData.GetWeather(_country, _city);
+        _temperatureLabel.Text = $"{weather.Main.Temperature}°C";
+
         _weatherButton.IsVisible = true;
         _weatherLoadingIndicator.IsRunning = false;
         _weatherLoadingIndicator.IsVisible = false;

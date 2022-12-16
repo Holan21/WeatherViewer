@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace WetherViewer.Models.API
+namespace WetherViewer.Models.API.Location.Coutry
 {
-    public class LocationData
+    public class LocationCountryData
     {
         [JsonPropertyName("name")]
         public string Name { get; set; } = string.Empty;

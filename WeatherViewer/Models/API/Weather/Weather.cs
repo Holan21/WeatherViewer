@@ -1,30 +1,30 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace WetherViewer.Models.API
+namespace WetherViewer.Models.API.Weather
 {
 
     public class Weather
     {
         [JsonPropertyName("coord")]
-        public Cordinate Cord { get; set; } = new Cordinate();
+        public Cordinate Cord { get; set; } = new();
         [JsonPropertyName("weather")]
-        public AboutWeather AboutWeather { get; set; } = new AboutWeather();
+        public AboutWeather AboutWeather { get; set; } = new();
         [JsonPropertyName("base")]
         public string Base { get; set; } = string.Empty;
         [JsonPropertyName("main")]
-        public Main Main { get; set; } = new Main();
+        public Main Main { get; set; } = new();
         [JsonPropertyName("visibility")]
         public int Visibility { get; set; } = int.MaxValue;
         [JsonPropertyName("wind")]
-        public Wind Wind { get; set; } = new Wind();
+        public Wind Wind { get; set; } = new();
         [JsonPropertyName("clouds")]
-        public Clouds Clouds { get; set; } = new Clouds();
+        public Clouds Clouds { get; set; } = new();
         [JsonPropertyName("rain")]
-        public Rain Rain { get; set; } = new Rain();
+        public Rain Rain { get; set; } = new();
         [JsonPropertyName("dt")]
         public int DateTime { get; set; } = int.MaxValue;
         [JsonPropertyName("sys")]
-        public System System { get; set; } = new System();
+        public System System { get; set; } = new();
         [JsonPropertyName("timezone")]
         public int TimeZone { get; set; } = int.MaxValue;
         [JsonPropertyName("id")]
@@ -60,9 +60,9 @@ namespace WetherViewer.Models.API
         [JsonPropertyName("temp")]
         public double Temperature { get; set; } = double.MaxValue;
         [JsonPropertyName("feels_like")]
-        public string TypeTemperature { get; set; } = string.Empty;
+        public double TypeTemperature { get; set; } = double.MaxValue;
         [JsonPropertyName("pressure")]
-        public string Pressure { get; set; } = string.Empty;
+        public int Pressure { get; set; } = int.MaxValue;
         [JsonPropertyName("humidity")]
         public int Humidity { get; set; } = int.MaxValue;
         [JsonPropertyName("sea_level")]
@@ -81,13 +81,13 @@ namespace WetherViewer.Models.API
         public double Gust { get; set; } = double.MaxValue;
     }
 
-    public class Clouds 
+    public class Clouds
     {
         [JsonPropertyName("all")]
         public int Cloudiness { get; set; } = int.MaxValue;
     }
 
-    public class Rain 
+    public class Rain
     {
         [JsonPropertyName("1h")]
         public double Rain1Hour { get; set; } = double.MaxValue;
