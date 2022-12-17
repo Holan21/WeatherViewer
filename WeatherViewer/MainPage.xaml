@@ -41,7 +41,7 @@
                     IsEnabled="False"
                     FontSize="Medium"
                     HorizontalOptions="Center"
-                    Margin="5"
+                    Margin="10"
                     SelectedIndexChanged="OnSelectedItem"/>
                 <Label
                     x:Name="TemperatureLabel"

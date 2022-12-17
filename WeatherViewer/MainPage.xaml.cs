@@ -110,6 +110,12 @@ public partial class MainPage : ContentPage
         _windDirectionLabel.IsVisible = false;
     }
 
+    private void SetEnebledControlElement(bool IsEnabled)
+    {
+        _weatherButton.IsEnabled = IsEnabled;
+        _cityPicker.IsEnabled = IsEnabled;
+    }
+
     private async void OnClickWeatherButton(object sender, EventArgs e)
     {
         try
@@ -119,7 +125,7 @@ public partial class MainPage : ContentPage
             _weatherLoadingIndicator.IsRunning = true;
             _weatherLoadingIndicator.IsVisible = true;
 
-            var weather = await _weatherData.GetWeather(_country, _city);
+            var weather = await _weatherData.GetWeather(_country.Trim(), _city.Trim());
             ShowWeather(weather);
         }
         catch
@@ -131,7 +137,6 @@ public partial class MainPage : ContentPage
             _weatherButton.IsVisible = true;
             _weatherLoadingIndicator.IsRunning = false;
             _weatherLoadingIndicator.IsVisible = false;
-            _temperatureLabel.IsVisible = true;
         }
     }
 
@@ -141,30 +146,35 @@ public partial class MainPage : ContentPage
         try
         {
             if (_countryEntry.Text.Trim() == string.Empty) throw new CountryNotFound("Country is Empty");
+            SetEnebledControlElement(false);
             _countryEntry.Unfocus();
             _cityPicker.IsVisible = false;
             _cityLoadingIndicator.IsVisible = true;
             _cityLoadingIndicator.IsRunning = true;
             _country = _countryEntry.Text;
-            cityList = await _citiesData.GetCities(_country);
+            cityList = await _citiesData.GetCities(_country.Trim());
+
+            _cityPicker.ItemsSource = cityList;
+            _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
+
+            _cityPicker.SelectedIndex = 0;
+
+            SetEnebledControlElement(true);
         }
         catch (CountryNotFound)
         {
             _borderCountryEntry.Stroke = _errorColorBorder;
             await AnimateError(_borderCountryEntry);
+
+            _cityPicker.ItemsSource = _defaultCitysList;
+            _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
         }
         finally
         {
             _cityLoadingIndicator.IsRunning = false;
             _cityLoadingIndicator.IsVisible = false;
 
-            _cityPicker.ItemsSource = cityList;
-            _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
-
-            _cityPicker.SelectedIndex = 0;
             _cityPicker.IsVisible = true;
-            _cityPicker.IsEnabled = true;
-            _weatherButton.IsEnabled = true;
         }
     }
     private void OnSelectedItem(object sender, EventArgs e)
@@ -176,12 +186,12 @@ public partial class MainPage : ContentPage
     private void OnTextChangedCountryEntry(object sender, TextChangedEventArgs e)
     {
         ClearWeather();
+        SetEnebledControlElement(false);
         _borderCountryEntry.Stroke = _defaultColorBorder;
         if (_countryEntry.Text.Trim() != string.Empty) return;
-        _cityPicker.IsEnabled = false;
 
         _cityPicker.SelectedIndex = -1;
         _cityPicker.ItemsSource = _defaultCitysList;
-        _weatherButton.IsEnabled = false;
+        SetEnebledControlElement(false);
     }
 }

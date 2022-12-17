@@ -19,7 +19,7 @@
                 case < 270:
                     return "WEST";
                 case < 360:
-                    return "WEST-NORTH";
+                    return "NORTH-WEST";
                 case 360:
                     return "NORTH";
 
