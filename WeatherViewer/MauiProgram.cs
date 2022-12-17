@@ -1,8 +1,8 @@
 ﻿using WetherViewer.Data.APIProviders.City;
 using WetherViewer.Data.APIProviders.Location;
 using WetherViewer.Data.APIProviders.Weather;
-using WetherViewer.Models.API;
 using WetherViewer.Service.CitiesData;
+using WetherViewer.Service.DiretionData;
 using WetherViewer.Service.LocationData;
 using WetherViewer.Service.WeatherData;
 
@@ -26,9 +26,10 @@ public static class MauiProgram
     }
     private static MauiAppBuilder RegisterAppServices(this MauiAppBuilder mauiAppBuilder)
     {
-        mauiAppBuilder.Services.AddSingleton<ILocationData , LocationJSONAPI>();
-        mauiAppBuilder.Services.AddSingleton<ICitiesData , CitiesJSONAPI>();
-        mauiAppBuilder.Services.AddSingleton<IWeatherData , WeatherJSONAPI>();
+        mauiAppBuilder.Services.AddSingleton<ILocationData, LocationJSONAPI>();
+        mauiAppBuilder.Services.AddSingleton<ICitiesData, CitiesJSONAPI>();
+        mauiAppBuilder.Services.AddSingleton<IWeatherData, WeatherJSONAPI>();
+        mauiAppBuilder.Services.AddSingleton<IDirectionData, DirectionData>();
 
         return mauiAppBuilder;
     }
