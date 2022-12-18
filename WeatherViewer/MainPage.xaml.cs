@@ -128,6 +128,10 @@ public partial class MainPage : ContentPage
             var weather = await _weatherData.GetWeather(_country.Trim(), _city.Trim());
             ShowWeather(weather);
         }
+        catch (HttpRequestException)
+        {
+            await DisplayAlert("Erorr", "You don't have internet. Pls check you connect.", "Close");
+        }
         catch
         {
             await DisplayAlert("Error", "City not available", "Close");
@@ -168,6 +172,10 @@ public partial class MainPage : ContentPage
 
             _cityPicker.ItemsSource = _defaultCitysList;
             _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
+        }
+        catch (HttpRequestException)
+        {
+            await DisplayAlert("Erorr", "You don't have internet. Pls check you connect.", "Close");
         }
         finally
         {
