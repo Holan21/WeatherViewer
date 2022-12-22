@@ -81,6 +81,10 @@
 	  <Compile Remove="Data\WeatherDate.cs" />
 	  <Compile Remove="Models\UserModel.cs" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Models\API\Request\" />
+	</ItemGroup>
   
   
 

@@ -1,34 +1,7 @@
 ﻿using System.Text.Json;
-
+using WetherViewer.Models.API.Location.Country;
 using WetherViewer.Service.LocationData;
-
-/* Unmerged change from project 'WeatherViewer (net6.0-android)'
-Before:
-using WetherViewer.Service.WeatherData;
-After:
-using WetherViewer.Service.ServiceManager;
-using WetherViewer.Service.WeatherData;
-*/
-
-/* Unmerged change from project 'WeatherViewer (net6.0-ios)'
-Before:
-using WetherViewer.Service.WeatherData;
-After:
-using WetherViewer.Service.ServiceManager;
-using WetherViewer.Service.ServiceManager.ServiceManager;
-using WetherViewer.Service.ServiceManager.ServiceManager.ServiceManager;
-using WetherViewer.Service.WeatherData;
-*/
-
-/* Unmerged change from project 'WeatherViewer (net6.0-maccatalyst)'
-Before:
-using WetherViewer.Service.WeatherData;
-After:
-using WetherViewer.Service.ServiceManager;
-using WetherViewer.Service.ServiceManager.ServiceManager;
-using WetherViewer.Service.WeatherData;
-*/
-
+using WetherViewer.Service.Managers;
 using WetherViewer.Service.ServiceManager;
 using WetherViewer.Service.WeatherData;
 
@@ -36,8 +9,8 @@ namespace WetherViewer.Data.APIProviders.Weather
 {
     public class WeatherJSONAPI : IWeatherData
     {
-        private const string _apikey = "751bc61019f1d402468490157e578fa2";
-        private const string _url = @"https://api.openweathermap.org/data/2.5/weather";
+        private const string _apikey = ConstManager.ApiKeyWeather;
+        private const string _url = ConstManager.UrlWeather;
 
         private readonly ILocationData _locationService;
 
@@ -48,16 +21,18 @@ namespace WetherViewer.Data.APIProviders.Weather
 
         public async Task<Models.API.Weather.Weather> GetWeather(string country, string city)
         {
-            Models.API.Weather.Weather weather = new();
-            Models.API.Location.City.LocationCity location = await _locationService.GetLocation(country, city, _apikey);
+            var body = new CountryBody(country);
+            var location = await _locationService.GetLocation(body, city);
 
             var urlFull = _url + $"?lat={location.Lat}&lon={location.Lot}&units={"metric"}&appid={_apikey}";
+
             HttpClient client = new();
+
             var respone = await client.GetAsync(urlFull);
             var json = await respone.Content.ReadAsStringAsync();
             json = json.Replace("[", "").Replace("]", "");
 
-            weather = JsonSerializer.Deserialize<Models.API.Weather.Weather>(json);
+            var weather = JsonSerializer.Deserialize<Models.API.Weather.Weather>(json);
             return weather;
         }
     }

@@ -1,4 +1,5 @@
-﻿using WetherViewer.Service.CitiesData;
+﻿using WetherViewer.Models.API.Location.City;
+using WetherViewer.Service.CitiesData;
 using WetherViewer.Service.DiretionData;
 using WetherViewer.Service.Exceptions;
 
@@ -23,6 +24,9 @@ public partial class MainPage : ContentPage
     private readonly IWeatherData _weatherData;
     private readonly ActivityIndicator _weatherLoadingIndicator;
     private string _country, _city;
+
+    //TODO:Check spelling
+    //TODO:Change location methods and functions
 
     public MainPage()
     {
@@ -145,7 +149,9 @@ public partial class MainPage : ContentPage
                 _cityLoadingIndicator.IsVisible = true;
                 _cityLoadingIndicator.IsRunning = true;
                 _country = _countryEntry.Text;
-                cityList = await _citiesData.GetCities(_country.Trim());
+
+                var request = new CitiesBody(_country);
+                cityList = await _citiesData.GetCities(request);
 
                 _cityPicker.ItemsSource = cityList;
                 _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
@@ -216,4 +222,5 @@ public partial class MainPage : ContentPage
         _windDirectionLabel.Text = $"Wind dir:{_directionData.GetDiretion(weather.Wind.Direction)}";
         _windDirectionLabel.IsVisible = true;
     }
+
 }
