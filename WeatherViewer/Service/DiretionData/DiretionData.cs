@@ -4,27 +4,18 @@
     {
         public string GetDiretion(int direction)
         {
-            switch (direction)
+            return direction switch
             {
-                case < 45:
-                    return "NORTH";
-                case < 90:
-                    return "NORTH-EAST";
-                case < 135:
-                    return "EAST";
-                case < 180:
-                    return "SOUTH";
-                case < 225:
-                    return "SOUTH-WEST";
-                case < 270:
-                    return "WEST";
-                case < 360:
-                    return "NORTH-WEST";
-                case 360:
-                    return "NORTH";
-
-            }
-            throw new Exception();
+                < 45 => "NORTH",
+                < 90 => "NORTH-EAST",
+                < 135 => "EAST",
+                < 180 => "SOUTH",
+                < 225 => "SOUTH-WEST",
+                < 270 => "WEST",
+                < 360 => "NORTH-WEST",
+                360 => "NORTH",
+                _ => "NA",
+            };
         }
     }
 }

@@ -1,22 +1,28 @@
 ﻿using System.Text.Json;
+
 using WetherViewer.Models.API.Location;
 using WetherViewer.Service.CitiesData;
 using WetherViewer.Service.Exceptions;
 
 namespace WetherViewer.Data.APIProviders.City
 {
+    //TODO: Replace dictionary by model
+
     internal class CitiesJSONAPI : ICitiesData
     {
         private readonly string _url = @"https://countriesnow.space/api/v0.1/countries/cities";
 
-        public async Task<List<string>> GetCities(string city)
+        public async Task<List<string>> GetCities(string country) // CitiesRequest request
         {
             HttpClient client = new();
+
+            // var jsonBody = JsonSerializer.Serialize(request); var response = await
+            // client.PostAsync(_url, jsonBody);
 
             var body = new FormUrlEncodedContent(
                 new Dictionary<string, string>
                 {
-                    {"country" , city},
+                    {"country" , country},
                 }
             );
 
