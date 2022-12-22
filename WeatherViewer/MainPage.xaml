@@ -18,69 +18,69 @@
                     <Entry x:Name="CountryEntry"
                        Text=""
                        FontSize="Medium"
-                       Placeholder="Country:" 
+                       Placeholder="Country:"
                        MinimumWidthRequest="150"
-                       Completed="OnCompletedCountryEntry" 
-                       TextChanged="OnTextChangedCountryEntry"/>
+                       Completed="OnCompletedCountryEntry"
+                       TextChanged="OnTextChangedCountryEntry" />
                 </Border>
                 <Image x:Name="ImageWeather" IsVisible="false" MaximumHeightRequest="100" MaximumWidthRequest="100" Margin="20" ></Image>
                 <Label x:Name="HumidityLabel"
                        FontSize="Medium"
                        Margin="5"
                        HorizontalOptions="Center"
-                       IsVisible="false"/>
+                       IsVisible="false" />
             </VerticalStackLayout>
-            <ActivityIndicator 
+            <ActivityIndicator
                     x:Name="CityLoadingIndecator"
                     IsRunning="False"
                     Margin="5"
                     Scale="1.25"
-                    IsVisible="false"/>
+                    IsVisible="false" />
             <VerticalStackLayout Padding="7">
-                <Picker x:Name="CityPicker" 
+                <Picker x:Name="CityPicker"
                     IsEnabled="False"
                     FontSize="Medium"
                     HorizontalOptions="Center"
                     Margin="10"
-                    SelectedIndexChanged="OnSelectedItem"/>
+                    SelectedIndexChanged="OnSelectedItem" />
                 <Label
                     x:Name="TemperatureLabel"
                     FontSize="Medium"
                     Margin="50"
                     HorizontalOptions="Center"
-                    IsVisible="false"/>
+                    IsVisible="false" />
                 <Label
                     x:Name="WindSpeedLabel"
                     FontSize="Medium"
                     Margin="5"
                     HorizontalOptions="Center"
-                    IsVisible="false"/>
+                    IsVisible="false" />
             </VerticalStackLayout>
             <VerticalStackLayout Padding="7">
                 <ActivityIndicator
                     x:Name="WeatherLoadingIndicator"
-                    IsRunning="False" 
+                    IsRunning="False"
                     IsVisible="False"
-                    Scale="1.25"/>
+                    Scale="1.25" />
                 <Button
                     x:Name="WeatherButton"
-                    Text="Check Weather" 
+                    Text="Check Weather"
                     FontSize="Medium"
                     IsEnabled="False"
                     Margin="5"
-                    Clicked="OnClickWeatherButton"/>
+                    Clicked="OnClickWeatherButton" />
                 <Label
                     x:Name="PressureLabel"
                     FontSize="Medium"
                     Margin="50"
                     HorizontalOptions="Center"
-                    IsVisible="false"/>
+                    IsVisible="false" />
                 <Label
                     x:Name="WindDirectionLabel"
                     FontSize="Medium"
                     Margin="5"
                     HorizontalOptions="Center"
-                    IsVisible="false"/>
+                    IsVisible="false" />
             </VerticalStackLayout>
         </FlexLayout>
     </ScrollView>

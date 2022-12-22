@@ -1,6 +1,8 @@
 ﻿using WetherViewer.Service.CitiesData;
 using WetherViewer.Service.DiretionData;
 using WetherViewer.Service.Exceptions;
+
+using WetherViewer.Service.ServiceManager;
 using WetherViewer.Service.WeatherData;
 
 namespace WetherViewer;

@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+
 using WetherViewer.Models.API.Location;
 using WetherViewer.Models.API.Location.City;
 using WetherViewer.Models.API.Location.Coutry;
@@ -10,6 +11,8 @@ namespace WetherViewer.Data.APIProviders.Location
     internal class LocationJSONAPI : ILocationData
     {
         private readonly string _url = @"https://countriesnow.space/api/v0.1/countries/positions";
+
+        //TODO: Replace dictionary by model
 
         public async Task<LocationCity> GetLocation(string coutry, string city, string appID)
         {
@@ -29,7 +32,7 @@ namespace WetherViewer.Data.APIProviders.Location
             var fullUrl = $@"http://api.openweathermap.org/geo/1.0/direct?q={city},{locationDataCountry.Data.Iso}&limit={1}&appid={appID}";
 
             respone = await client.GetAsync(fullUrl);
-            string json = await respone.Content.ReadAsStringAsync();
+            var json = await respone.Content.ReadAsStringAsync();
             json = json.Replace('[', ' ');
             json = json.Replace(']', ' ');
             var locationDataCity = JsonSerializer.Deserialize<LocationCity>(json);
