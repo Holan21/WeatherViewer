@@ -10,18 +10,19 @@ namespace WetherViewer;
 
 public partial class MainPage : ContentPage
 {
-    private readonly Border _borderCountryEntry;
     private readonly ICitiesData _citiesData;
+    private readonly IWeatherData _weatherData;
+    private readonly IDirectionData _directionData;
+
+    private readonly Border _borderCountryEntry;
     private readonly ActivityIndicator _cityLoadingIndicator;
     private readonly Picker _cityPicker;
     private readonly Entry _countryEntry;
     private readonly string[] _defaultCitysList;
     private readonly Brush _defaultColorBorder, _errorColorBorder;
-    private readonly IDirectionData _directionData;
     private readonly Image _imageWeather;
     private readonly Label _temperatureLabel, _pressureLabel, _humidityLabel, _windSpeedLabel, _windDirectionLabel;
     private readonly Button _weatherButton;
-    private readonly IWeatherData _weatherData;
     private readonly ActivityIndicator _weatherLoadingIndicator;
     private string _country, _city;
 
@@ -191,8 +192,10 @@ public partial class MainPage : ContentPage
         _borderCountryEntry.Stroke = _defaultColorBorder;
         if (_countryEntry.Text.Trim() != string.Empty) return;
 
-        _cityPicker.SelectedIndex = -1;
         _cityPicker.ItemsSource = _defaultCitysList;
+        _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
+        _cityPicker.SelectedIndex = 0;
+
         SetEnebledControlElement(false);
     }
 

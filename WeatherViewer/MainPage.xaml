@@ -17,6 +17,7 @@
                     Margin="5">
                     <Entry x:Name="CountryEntry"
                        Text=""
+                       Margin="5"
                        FontSize="Medium"
                        Placeholder="Country:"
                        MinimumWidthRequest="150"
