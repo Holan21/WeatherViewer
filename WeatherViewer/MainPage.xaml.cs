@@ -23,11 +23,10 @@ public partial class MainPage : ContentPage
     private readonly Label _temperatureLabel, _pressureLabel, _humidityLabel, _windSpeedLabel, _windDirectionLabel;
     private readonly Button _weatherButton;
     private readonly ActivityIndicator _weatherLoadingIndicator;
-    private readonly string[] _defaultCitysList;
+    private readonly string[] _defaultCitiesList;
     private string _country, _city;
 
     //TODO:Check spelling
-    //TODO:Change location methods and functions
 
     public MainPage()
     {
@@ -50,8 +49,8 @@ public partial class MainPage : ContentPage
         _borderCountryEntry = BorderCounryEntry;
         _imageWeather = ImageWeather;
 
-        _defaultCitysList = new string[] { "Write country" };
-        _cityPicker.ItemsSource = _defaultCitysList;
+        _defaultCitiesList = new string[] { "Write country" };
+        _cityPicker.ItemsSource = _defaultCitiesList;
         _cityPicker.SelectedIndex = 0;
         _defaultColorBorder = _borderCountryEntry.Stroke;
         _errorColorBorder = new Color(255, 0, 0);
@@ -78,7 +77,6 @@ public partial class MainPage : ContentPage
 
             _cityPicker.ItemsSource = cityList;
             _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
-
             _cityPicker.SelectedIndex = 0;
 
             SetEnebledControlElement(true);
@@ -88,7 +86,7 @@ public partial class MainPage : ContentPage
             _borderCountryEntry.Stroke = _errorColorBorder;
             await AnimateError(_borderCountryEntry);
 
-            _cityPicker.ItemsSource = _defaultCitysList;
+            _cityPicker.ItemsSource = _defaultCitiesList;
             _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
 
         }
@@ -193,7 +191,7 @@ public partial class MainPage : ContentPage
         _borderCountryEntry.Stroke = _defaultColorBorder;
         if (_countryEntry.Text.Trim() != string.Empty) return;
 
-        _cityPicker.ItemsSource = _defaultCitysList;
+        _cityPicker.ItemsSource = _defaultCitiesList;
         _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
         _cityPicker.SelectedIndex = 0;
 

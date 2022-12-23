@@ -27,12 +27,12 @@ namespace WetherViewer.Data.APIProviders.Location
 
             if (locationDataCountry.Data == null) throw new CountryNotFound();
 
-            var fullUrl = $@"{_urlDirect}?q={city},{locationDataCountry.Data.Iso}&limit={1}&appid={_appKey}";
+            var url = $@"{_urlDirect}?q={city},{locationDataCountry.Data.Iso}&limit={1}&appid={_appKey}";
 
-            respone = await client.GetAsync(fullUrl);
+            respone = await client.GetAsync(url);
             var json = await respone.Content.ReadAsStringAsync();
-            json = json.Replace('[', ' ');
-            json = json.Replace(']', ' ');
+            json = json.Replace("[", "").Replace("]", "");
+
             var locationDataCity = JsonSerializer.Deserialize<LocationCity>(json);
 
             return locationDataCity;

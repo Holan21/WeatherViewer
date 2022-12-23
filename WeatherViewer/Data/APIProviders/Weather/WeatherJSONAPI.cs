@@ -10,7 +10,7 @@ namespace WetherViewer.Data.APIProviders.Weather
     public class WeatherJSONAPI : IWeatherData
     {
         private const string _apikey = ConstManager.ApiKeyWeather;
-        private const string _url = ConstManager.UrlWeather;
+        private const string _urlDomen = ConstManager.UrlWeather;
 
         private readonly ILocationData _locationService;
 
@@ -24,15 +24,16 @@ namespace WetherViewer.Data.APIProviders.Weather
             var body = new CountryBody(country);
             var location = await _locationService.GetLocation(body, city);
 
-            var urlFull = _url + $"?lat={location.Lat}&lon={location.Lot}&units={"metric"}&appid={_apikey}";
+            var url = _urlDomen + $"?lat={location.Lat}&lon={location.Lot}&units={"metric"}&appid={_apikey}";
 
             HttpClient client = new();
 
-            var respone = await client.GetAsync(urlFull);
+            var respone = await client.GetAsync(url);
             var json = await respone.Content.ReadAsStringAsync();
             json = json.Replace("[", "").Replace("]", "");
 
             var weather = JsonSerializer.Deserialize<Models.API.Weather.Weather>(json);
+
             return weather;
         }
     }
