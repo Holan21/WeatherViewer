@@ -18,12 +18,12 @@ public partial class MainPage : ContentPage
     private readonly ActivityIndicator _cityLoadingIndicator;
     private readonly Picker _cityPicker;
     private readonly Entry _countryEntry;
-    private readonly string[] _defaultCitysList;
     private readonly Brush _defaultColorBorder, _errorColorBorder;
     private readonly Image _imageWeather;
     private readonly Label _temperatureLabel, _pressureLabel, _humidityLabel, _windSpeedLabel, _windDirectionLabel;
     private readonly Button _weatherButton;
     private readonly ActivityIndicator _weatherLoadingIndicator;
+    private readonly string[] _defaultCitysList;
     private string _country, _city;
 
     //TODO:Check spelling
@@ -58,6 +58,59 @@ public partial class MainPage : ContentPage
         _countryEntry.Focus();
     }
 
+    private async void OnCompletedCountryEntry(object sender, EventArgs e)
+    {
+        var cityList = new List<string>();
+        try
+        {
+            CheckInternet();
+            if (_countryEntry.Text.Trim() == string.Empty) throw new CountryNotFound("Country is Empty");
+
+            SetEnebledControlElement(false);
+            _countryEntry.Unfocus();
+            _cityPicker.IsVisible = false;
+            _cityLoadingIndicator.IsVisible = true;
+            _cityLoadingIndicator.IsRunning = true;
+            _country = _countryEntry.Text;
+
+            var request = new CitiesBody(_country);
+            cityList = await _citiesData.GetCities(request);
+
+            _cityPicker.ItemsSource = cityList;
+            _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
+
+            _cityPicker.SelectedIndex = 0;
+
+            SetEnebledControlElement(true);
+        }
+        catch (CountryNotFound)
+        {
+            _borderCountryEntry.Stroke = _errorColorBorder;
+            await AnimateError(_borderCountryEntry);
+
+            _cityPicker.ItemsSource = _defaultCitysList;
+            _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
+
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", ex.Message, "Close");
+        }
+        finally
+        {
+            _cityLoadingIndicator.IsRunning = false;
+            _cityLoadingIndicator.IsVisible = false;
+            _cityPicker.IsVisible = true;
+        }
+    }
+
+    private static void CheckInternet()
+    {
+        NetworkAccess accessType = Connectivity.Current.NetworkAccess;
+        if (accessType == NetworkAccess.None || accessType == NetworkAccess.Unknown)
+            throw new Exception();
+    }
+
     private static async Task AnimateError(VisualElement border)
     {
         try
@@ -75,108 +128,10 @@ public partial class MainPage : ContentPage
         }
     }
 
-    private void ClearWeather()
+    private void SetEnebledControlElement(bool IsEnabled)
     {
-        _temperatureLabel.Text = string.Empty;
-        _temperatureLabel.IsVisible = false;
-
-        _imageWeather.Source = string.Empty;
-        _imageWeather.IsVisible = false;
-
-        _pressureLabel.Text = string.Empty;
-        _pressureLabel.IsVisible = false;
-
-        _humidityLabel.Text = string.Empty;
-        _humidityLabel.IsVisible = false;
-
-        _windSpeedLabel.Text = string.Empty;
-        _windSpeedLabel.IsVisible = false;
-
-        _windDirectionLabel.Text = string.Empty;
-        _windDirectionLabel.IsVisible = false;
-    }
-
-    private async void OnClickWeatherButton(object sender, EventArgs e)
-    {
-        NetworkAccess accessType = Connectivity.Current.NetworkAccess;
-
-        if (accessType == NetworkAccess.None || accessType == NetworkAccess.Unknown)
-        {
-            await DisplayAlert("Error", "You don't have internet. Pls check you connect.", "Close");
-        }
-        else
-        {
-            try
-            {
-                _temperatureLabel.IsVisible = false;
-                _weatherButton.IsVisible = false;
-                _weatherLoadingIndicator.IsRunning = true;
-                _weatherLoadingIndicator.IsVisible = true;
-
-                var weather = await _weatherData.GetWeather(_country.Trim(), _city.Trim());
-                ShowWeather(weather);
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("Error", ex.Message, "Close");
-            }
-            finally
-            {
-                _weatherButton.IsVisible = true;
-                _weatherLoadingIndicator.IsRunning = false;
-                _weatherLoadingIndicator.IsVisible = false;
-            }
-        }
-    }
-
-    private async void OnCompletedCountryEntry(object sender, EventArgs e)
-    {
-        NetworkAccess accessType = Connectivity.Current.NetworkAccess;
-
-        if (accessType == NetworkAccess.None || accessType == NetworkAccess.Unknown)
-        {
-            await DisplayAlert("Error", "You don't have internet. Pls check you connect.", "Close");
-        }
-        else
-        {
-            var cityList = new List<string>();
-            try
-            {
-                if (_countryEntry.Text.Trim() == string.Empty) throw new CountryNotFound("Country is Empty");
-
-                SetEnebledControlElement(false);
-                _countryEntry.Unfocus();
-                _cityPicker.IsVisible = false;
-                _cityLoadingIndicator.IsVisible = true;
-                _cityLoadingIndicator.IsRunning = true;
-                _country = _countryEntry.Text;
-
-                var request = new CitiesBody(_country);
-                cityList = await _citiesData.GetCities(request);
-
-                _cityPicker.ItemsSource = cityList;
-                _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
-
-                _cityPicker.SelectedIndex = 0;
-
-                SetEnebledControlElement(true);
-            }
-            catch (CountryNotFound)
-            {
-                _borderCountryEntry.Stroke = _errorColorBorder;
-                await AnimateError(_borderCountryEntry);
-
-                _cityPicker.ItemsSource = _defaultCitysList;
-                _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
-            }
-            finally
-            {
-                _cityLoadingIndicator.IsRunning = false;
-                _cityLoadingIndicator.IsVisible = false;
-
-                _cityPicker.IsVisible = true;
-            }
-        }
+        _weatherButton.IsEnabled = IsEnabled;
+        _cityPicker.IsEnabled = IsEnabled;
     }
 
     private void OnSelectedItem(object sender, EventArgs e)
@@ -185,24 +140,29 @@ public partial class MainPage : ContentPage
         ClearWeather();
     }
 
-    private void OnTextChangedCountryEntry(object sender, TextChangedEventArgs e)
+    private async void OnClickWeatherButton(object sender, EventArgs e)
     {
-        ClearWeather();
-        SetEnebledControlElement(false);
-        _borderCountryEntry.Stroke = _defaultColorBorder;
-        if (_countryEntry.Text.Trim() != string.Empty) return;
+        try
+        {
+            CheckInternet();
+            _temperatureLabel.IsVisible = false;
+            _weatherButton.IsVisible = false;
+            _weatherLoadingIndicator.IsRunning = true;
+            _weatherLoadingIndicator.IsVisible = true;
 
-        _cityPicker.ItemsSource = _defaultCitysList;
-        _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
-        _cityPicker.SelectedIndex = 0;
-
-        SetEnebledControlElement(false);
-    }
-
-    private void SetEnebledControlElement(bool IsEnabled)
-    {
-        _weatherButton.IsEnabled = IsEnabled;
-        _cityPicker.IsEnabled = IsEnabled;
+            var weather = await _weatherData.GetWeather(_country.Trim(), _city.Trim());
+            ShowWeather(weather);
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", ex.Message, "Close");
+        }
+        finally
+        {
+            _weatherButton.IsVisible = true;
+            _weatherLoadingIndicator.IsRunning = false;
+            _weatherLoadingIndicator.IsVisible = false;
+        }
     }
 
     private void ShowWeather(Models.API.Weather.Weather weather)
@@ -224,6 +184,41 @@ public partial class MainPage : ContentPage
 
         _windDirectionLabel.Text = $"Wind dir:{_directionData.GetDiretion(weather.Wind.Direction)}";
         _windDirectionLabel.IsVisible = true;
+    }
+
+    private void OnTextChangedCountryEntry(object sender, TextChangedEventArgs e)
+    {
+        ClearWeather();
+        SetEnebledControlElement(false);
+        _borderCountryEntry.Stroke = _defaultColorBorder;
+        if (_countryEntry.Text.Trim() != string.Empty) return;
+
+        _cityPicker.ItemsSource = _defaultCitysList;
+        _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
+        _cityPicker.SelectedIndex = 0;
+
+        SetEnebledControlElement(false);
+    }
+
+    private void ClearWeather()
+    {
+        _temperatureLabel.Text = string.Empty;
+        _temperatureLabel.IsVisible = false;
+
+        _imageWeather.Source = string.Empty;
+        _imageWeather.IsVisible = false;
+
+        _pressureLabel.Text = string.Empty;
+        _pressureLabel.IsVisible = false;
+
+        _humidityLabel.Text = string.Empty;
+        _humidityLabel.IsVisible = false;
+
+        _windSpeedLabel.Text = string.Empty;
+        _windSpeedLabel.IsVisible = false;
+
+        _windDirectionLabel.Text = string.Empty;
+        _windDirectionLabel.IsVisible = false;
     }
 
 }
