@@ -6,13 +6,13 @@
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
 		<OutputType>Exe</OutputType>
-		<RootNamespace>WetherViewer</RootNamespace>
+		<RootNamespace>WeatherViewer</RootNamespace>
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>WetherViewer</ApplicationTitle>
+		<ApplicationTitle>WeatherViewer</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.wetherviewer</ApplicationId>
@@ -53,7 +53,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#004DFF" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" Color="#004DFF" />	
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#004DFF" BaseSize="128,128" />
