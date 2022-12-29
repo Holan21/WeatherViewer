@@ -19,7 +19,7 @@
 		<ApplicationIdGuid>2541EA6C-0812-4B1A-8FBC-D31A1CEA01F8</ApplicationIdGuid>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>2.1</ApplicationDisplayVersion>
+		<ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
 		<ApplicationVersion>2</ApplicationVersion>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
@@ -38,7 +38,7 @@
 
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
 
-    <PackageCertificateThumbprint>E0A828648211BC0DFDE967FA2A454140F877580A</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>62B9F718343FAED40B7A24F490070FD0B174E98E</PackageCertificateThumbprint>
 
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
 	</PropertyGroup>
