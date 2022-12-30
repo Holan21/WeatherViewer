@@ -1,4 +1,5 @@
-﻿using WetherViewer.Models.API.Location.City;
+﻿using System.Collections;
+using WetherViewer.Models.API.Location.City;
 using WetherViewer.Service.CitiesData;
 using WetherViewer.Service.DiretionData;
 using WetherViewer.Service.Exceptions;
@@ -24,8 +25,6 @@ public partial class MainPage : ContentPage
     private readonly ActivityIndicator _weatherLoadingIndicator;
     private readonly string[] _defaultCitiesList;
     private string _country, _city;
-
-    //TODO:Check spelling
 
     public MainPage()
     {
@@ -64,18 +63,18 @@ public partial class MainPage : ContentPage
             CheckInternet();
             if (_countryEntry.Text.Trim() == string.Empty) throw new CountryNotFound("Country is Empty");
 
+            _countryEntry.IsEnabled = false;
             SetEnebledControlElement(false);
             _countryEntry.Unfocus();
             _cityPicker.IsVisible = false;
             _cityLoadingIndicator.IsVisible = true;
             _cityLoadingIndicator.IsRunning = true;
-            _country = _countryEntry.Text;
+            _country = _countryEntry.Text.Trim();
 
             var request = new CitiesBody(_country);
             cityList = await _citiesData.GetCities(request);
 
-            _cityPicker.ItemsSource = cityList;
-            _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
+            SetCityPicker(cityList);
             _cityPicker.SelectedIndex = 0;
 
             SetEnebledControlElement(true);
@@ -85,18 +84,22 @@ public partial class MainPage : ContentPage
             _borderCountryEntry.Stroke = _errorColorBorder;
             await AnimateError(_borderCountryEntry);
 
-            _cityPicker.ItemsSource = _defaultCitiesList;
-            _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
-
+            SetCityPicker(_defaultCitiesList);
         }
         catch (Exception ex)
         {
             await DisplayAlert("Error", ex.Message, "Close");
+
+            SetCityPicker(_defaultCitiesList);
         }
         finally
         {
             _cityLoadingIndicator.IsRunning = false;
             _cityLoadingIndicator.IsVisible = false;
+
+            _countryEntry.IsEnabled = true;
+
+            _cityPicker.SelectedIndex = 0;
             _cityPicker.IsVisible = true;
         }
     }
@@ -108,6 +111,11 @@ public partial class MainPage : ContentPage
             throw new Exception();
     }
 
+    private void SetCityPicker(IList list)
+    {
+        _cityPicker.ItemsSource = list;
+        _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
+    }
     private static async Task AnimateError(VisualElement border)
     {
         try
@@ -142,7 +150,7 @@ public partial class MainPage : ContentPage
         try
         {
             CheckInternet();
-            _temperatureLabel.IsVisible = false;
+            _countryEntry.IsEnabled = false;
             _weatherButton.IsVisible = false;
             _weatherLoadingIndicator.IsRunning = true;
             _weatherLoadingIndicator.IsVisible = true;
@@ -159,6 +167,8 @@ public partial class MainPage : ContentPage
             _weatherButton.IsVisible = true;
             _weatherLoadingIndicator.IsRunning = false;
             _weatherLoadingIndicator.IsVisible = false;
+
+            _countryEntry.IsEnabled = true;
         }
     }
 
@@ -188,10 +198,8 @@ public partial class MainPage : ContentPage
         ClearWeather();
         SetEnebledControlElement(false);
         _borderCountryEntry.Stroke = _defaultColorBorder;
-        if (_countryEntry.Text.Trim() != string.Empty) return;
 
-        _cityPicker.ItemsSource = _defaultCitiesList;
-        _cityPicker.ItemsSource = _cityPicker.GetItemsAsArray();
+        SetCityPicker(_defaultCitiesList);
         _cityPicker.SelectedIndex = 0;
 
         SetEnebledControlElement(false);
